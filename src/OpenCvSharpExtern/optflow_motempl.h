@@ -12,7 +12,9 @@ CVAPI(ExceptionStatus) optflow_motempl_updateMotionHistory(
     double timestamp, double duration)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     cv::motempl::updateMotionHistory(*silhouette, *mhi, timestamp, duration);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 
@@ -21,7 +23,9 @@ CVAPI(ExceptionStatus) optflow_motempl_calcMotionGradient(
     double delta1, double delta2, int apertureSize)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     cv::motempl::calcMotionGradient(*mhi, *mask, *orientation, delta1, delta2, apertureSize);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 
@@ -30,7 +34,9 @@ CVAPI(ExceptionStatus) optflow_motempl_calcGlobalOrientation(
     cv::_InputArray *mhi, double timestamp, double duration, double *returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     *returnValue = cv::motempl::calcGlobalOrientation(*orientation, *mask, *mhi, timestamp, duration);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 
@@ -40,7 +46,9 @@ CVAPI(ExceptionStatus) optflow_motempl_segmentMotion(
     double timestamp, double segThresh)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     cv::motempl::segmentMotion(*mhi, *segmask, *boundingRects, timestamp, segThresh);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 

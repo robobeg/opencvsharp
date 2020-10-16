@@ -9,6 +9,15 @@
 
 #include "include_opencv.h"
 
+
+namespace cv
+{
+	namespace text
+	{
+		class CV_EXPORTS_W OCRTesseract;
+	}
+}
+
 // BaseOCR
 
 /*CVAPI(ExceptionStatus) text_BaseOCR_run1(
@@ -21,7 +30,9 @@
     int component_level)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     obj->run(*image, *output_text, component_rects, component_texts, component_confidences, component_level);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }*/
 
@@ -36,7 +47,9 @@
     int component_level)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     obj->run(*image, *mask, *output_text, component_rects, component_texts, component_confidences, component_level);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }*/
 
@@ -52,7 +65,9 @@ CVAPI(ExceptionStatus) text_OCRTesseract_run1(
     int component_level)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     obj->run(*image, *output_text, component_rects, component_texts, component_confidences, component_level);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }
 
@@ -67,7 +82,9 @@ CVAPI(ExceptionStatus) text_OCRTesseract_run2(
     int component_level)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     obj->run(*image, *mask, *output_text, component_rects, component_texts, component_confidences, component_level);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }
 
@@ -79,8 +96,10 @@ CVAPI(ExceptionStatus) text_OCRTesseract_run2(
     std::string *dst)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     const auto result = obj->run(*image, min_confidence, component_level);
     dst->assign(result);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }*/
 
@@ -93,8 +112,10 @@ CVAPI(ExceptionStatus) text_OCRTesseract_run2(
     std::string *dst)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     const auto result = obj->run(*image, *mask, min_confidence, component_level);
     dst->assign(result);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }*/
 
@@ -103,7 +124,9 @@ CVAPI(ExceptionStatus) text_OCRTesseract_setWhiteList(
     const char *char_whitelist)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     obj->setWhiteList(char_whitelist);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }
 
@@ -116,8 +139,10 @@ CVAPI(ExceptionStatus) text_OCRTesseract_create(
     cv::Ptr<cv::text::OCRTesseract> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     const auto result = cv::text::OCRTesseract::create(datapath, language, char_whitelist, oem, psmode);
     *returnValue = clone(result);
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }
 
@@ -125,7 +150,9 @@ CVAPI(ExceptionStatus) text_Ptr_OCRTesseract_delete(
     cv::Ptr<cv::text::OCRTesseract> *obj)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     delete obj;
+#endif//HAVE_OPENCV_TEXT
     END_WRAP
 }
 
@@ -133,7 +160,9 @@ CVAPI(ExceptionStatus) text_OCRTesseract_get(
     cv::Ptr<cv::text::OCRTesseract> *obj, cv::text::OCRTesseract **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT
     *returnValue = obj->get();
+#endif//HAVE_OPENCV_TEXT	
     END_WRAP
 }
 
@@ -143,7 +172,9 @@ CVAPI(ExceptionStatus) text_detectTextSWT(
     cv::_InputArray *input, std::vector<cv::Rect> *result, int dark_on_light, cv::_OutputArray *draw, cv::_OutputArray *chainBBs)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TEXT	
     cv::text::detectTextSWT(*input, *result, dark_on_light != 0, entity(draw), entity(chainBBs));
+#endif//HAVE_OPENCV_TEXT	
     END_WRAP    
 }
 

@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>ARM</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -16,6 +20,10 @@
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
       <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -50,6 +58,11 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -62,6 +75,12 @@
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -87,7 +106,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,11 +145,24 @@
     <IncludePath>$(SolutionDir)\opencv_files\opencv450_uwp_ARM\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\opencv_files\opencv450_uwp_ARM\x86\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <GenerateManifest>false</GenerateManifest>
+    <TargetName>OpenCvSharpExtern</TargetName>
+    <IncludePath>$(SolutionDir)\opencv_files\opencv450_uwp_ARM\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\opencv_files\opencv450_uwp_ARM\x86\vc16\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <TargetName>OpenCvSharpExtern</TargetName>
     <IncludePath>$(SolutionDir)\opencv_files\opencv450_uwp_ARM\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\opencv_files\opencv450_uwp_ARM\x86\vc16\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)src\$(Configuration)\$(MSBuildProjectName)\$(Platform)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <GenerateManifest>false</GenerateManifest>
+    <TargetName>OpenCvSharpExtern</TargetName>
+    <IncludePath>C:\Work\opencv-4.5.0_build_uwp_ARM64\install\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Work\opencv-4.5.0_build_uwp_ARM64\install\ARM64\vc16\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)src\$(Configuration)\$(MSBuildProjectName)\$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -193,6 +231,22 @@
       <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PreprocessorDefinitions>_WINRT_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>28204</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -208,6 +262,23 @@
       <SubSystem>Console</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <AdditionalDependencies>opencv_world450.lib;opencv_img_hash450.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>_WINRT_DLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <AdditionalUsingDirectories>$(WindowsSDK_WindowsMetadata);$(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>28204;26439</DisableSpecificWarnings>
+      <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <AdditionalDependencies>opencv_world450.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -246,9 +317,12 @@
   <ItemGroup>
     <ClInclude Include="..\OpenCvSharpExtern\aruco.h" />
     <ClInclude Include="..\OpenCvSharpExtern\bgsegm.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\boards_from_corners.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\board_energy.h" />
     <ClInclude Include="..\OpenCvSharpExtern\calib3d.h" />
     <ClInclude Include="..\OpenCvSharpExtern\calib3d_fisheye.h" />
     <ClInclude Include="..\OpenCvSharpExtern\calib3d_StereoMatcher.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\config.h" />
     <ClInclude Include="..\OpenCvSharpExtern\core.h" />
     <ClInclude Include="..\OpenCvSharpExtern\core_Algorithm.h" />
     <ClInclude Include="..\OpenCvSharpExtern\core_FileNode.h" />
@@ -262,6 +336,7 @@
     <ClInclude Include="..\OpenCvSharpExtern\core_RNG.h" />
     <ClInclude Include="..\OpenCvSharpExtern\core_SparseMat.h" />
     <ClInclude Include="..\OpenCvSharpExtern\core_SVD.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\create_correlation_patch.h" />
     <ClInclude Include="..\OpenCvSharpExtern\cuda.h" />
     <ClInclude Include="..\OpenCvSharpExtern\cuda_GpuMat.h" />
     <ClInclude Include="..\OpenCvSharpExtern\dnn.h" />
@@ -274,9 +349,17 @@
     <ClInclude Include="..\OpenCvSharpExtern\features2d_DescriptorMatcher.h" />
     <ClInclude Include="..\OpenCvSharpExtern\features2d_Feature2D.h" />
     <ClInclude Include="..\OpenCvSharpExtern\features2d_KeyPointsFilter.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\filter_board.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\filter_corners.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\find_corners.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\find_modes_meanshift.h" />
     <ClInclude Include="..\OpenCvSharpExtern\flann.h" />
     <ClInclude Include="..\OpenCvSharpExtern\flann_IndexParams.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\get_image_patch.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\get_init_location.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\grow_board.h" />
     <ClInclude Include="..\OpenCvSharpExtern\highgui.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\image_normalization_and_gradients.h" />
     <ClInclude Include="..\OpenCvSharpExtern\imgcodecs.h" />
     <ClInclude Include="..\OpenCvSharpExtern\imgproc.h" />
     <ClInclude Include="..\OpenCvSharpExtern\imgproc_CLAHE.h" />
@@ -285,6 +368,8 @@
     <ClInclude Include="..\OpenCvSharpExtern\imgproc_Subdiv2D.h" />
     <ClInclude Include="..\OpenCvSharpExtern\img_hash.h" />
     <ClInclude Include="..\OpenCvSharpExtern\include_opencv.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\init_board.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\mark_board.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ml.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ml_ANN_MLP.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ml_Boost.h" />
@@ -298,6 +383,8 @@
     <ClInclude Include="..\OpenCvSharpExtern\ml_SVM.h" />
     <ClInclude Include="..\OpenCvSharpExtern\my_functions.h" />
     <ClInclude Include="..\OpenCvSharpExtern\my_types.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\NewCylindricalProbeTracker.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\non_maximum_suppression.h" />
     <ClInclude Include="..\OpenCvSharpExtern\objdetect.h" />
     <ClInclude Include="..\OpenCvSharpExtern\objdetect_HOGDescriptor.h" />
     <ClInclude Include="..\OpenCvSharpExtern\objdetect_QRCodeDetector.h" />
@@ -306,7 +393,10 @@
     <ClInclude Include="..\OpenCvSharpExtern\photo.h" />
     <ClInclude Include="..\OpenCvSharpExtern\photo_HDR.h" />
     <ClInclude Include="..\OpenCvSharpExtern\photo_Tonemap.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\polynomial_fit.h" />
     <ClInclude Include="..\OpenCvSharpExtern\quality.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\refine_corners.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\score_corners.h" />
     <ClInclude Include="..\OpenCvSharpExtern\shape_ShapeDistanceExtractor.h" />
     <ClInclude Include="..\OpenCvSharpExtern\std_string.h" />
     <ClInclude Include="..\OpenCvSharpExtern\std_vector.h" />
@@ -321,6 +411,7 @@
     <ClInclude Include="..\OpenCvSharpExtern\videoio.h" />
     <ClInclude Include="..\OpenCvSharpExtern\video_background_segm.h" />
     <ClInclude Include="..\OpenCvSharpExtern\video_tracking.h" />
+    <ClInclude Include="..\OpenCvSharpExtern\weight_mask.h" />
     <ClInclude Include="..\OpenCvSharpExtern\xfeatures2d.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ximgproc.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ximgproc_EdgeBoxes.h" />
@@ -332,23 +423,40 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\OpenCvSharpExtern\aruco.cpp" />
-    <ClCompile Include="..\OpenCvSharpExtern\bgsegm.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\boards_from_corners.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\board_energy.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\calib3d.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\config.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\core.cpp" />
-    <ClCompile Include="..\OpenCvSharpExtern\cuda.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\create_correlation_patch.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\dnn.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\face.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\features2d.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\filter_board.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\filter_corners.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\find_corners.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\find_modes_meanshift.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\flann.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\get_image_patch.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\get_init_location.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\grow_board.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\highgui.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\image_normalization_and_gradients.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\imgcodecs.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\imgproc.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\img_hash.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\init_board.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\mark_board.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\ml.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\NewCylindricalProbeTracker.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\non_maximum_suppression.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\objdetect.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\optflow.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\photo.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\polynomial_fit.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\quality.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\refine_corners.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\score_corners.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\shape.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\std_string.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\std_vector.cpp" />
@@ -358,6 +466,7 @@
     <ClCompile Include="..\OpenCvSharpExtern\tracking.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\video.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\videoio.cpp" />
+    <ClCompile Include="..\OpenCvSharpExtern\weight_mask.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\xfeatures2d.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\ximgproc.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\xphoto.cpp" />

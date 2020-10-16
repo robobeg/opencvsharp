@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|ARM64">
+      <Configuration>Debug</Configuration>
+      <Platform>ARM64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -8,6 +12,10 @@
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|ARM64">
+      <Configuration>Release</Configuration>
+      <Platform>ARM64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
@@ -23,6 +31,7 @@
     <RootNamespace>OpenCvSharpExtern</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <VcpkgTriplet Condition="'$(Platform)'=='Win32'">x86-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='ARM64'">x86-windows-static</VcpkgTriplet>
     <VcpkgTriplet Condition="'$(Platform)'=='x64'">x64-windows-static</VcpkgTriplet>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -33,7 +42,18 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v142</PlatformToolset>
@@ -55,7 +75,13 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
@@ -69,24 +95,31 @@
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)src\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">src\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">src\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)src\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">src\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)src\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">src\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)src\$(Configuration)\$(PlatformName)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">src\$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\opencv_files\opencv450_win_x64\include;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\opencv_files\opencv450_win_x64\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Work\opencv-4.5.0_build_win64\install\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)\opencv_files\opencv450_win_x64\x64\vc16\staticlib;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)\opencv_files\opencv450_win_x64\x64\vc16\staticlib;$(SolutionDir)\tesseract_files\tesseract_vcpkg\installed\x64-windows-static\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Work\opencv-4.5.0_build_win64\install\x64\vc16\staticlib;$(SolutionDir)\tesseract_files\tesseract_vcpkg\installed\x64-windows-static\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\opencv_files\opencv450_win_x86\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(SolutionDir)\opencv_files\opencv450_win_x86\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\opencv_files\opencv450_win_x86\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(SolutionDir)\opencv_files\opencv450_win_x86\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\opencv_files\opencv450_win_x86\x86\vc16\staticlib;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib;$(SolutionDir)\tesseract_files\tesseract_vcpkg\installed\x86-windows-static\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">$(SolutionDir)\opencv_files\opencv450_win_x86\x86\vc16\staticlib;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib;$(SolutionDir)\tesseract_files\tesseract_vcpkg\installed\x86-windows-static\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\opencv_files\opencv450_win_x86\x86\vc16\staticlib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">$(SolutionDir)\opencv_files\opencv450_win_x86\x86\vc16\staticlib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -107,6 +140,30 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -184,6 +241,48 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CVAPI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAsManaged>false</CompileAsManaged>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <OpenMPSupport>true</OpenMPSupport>
+      <DisableSpecificWarnings>4251;4275;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ade.lib;IlmImf.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libopenjp2.lib;libjpeg-turbo.lib;libpng.lib;libprotobuf.lib;libtiff.lib;libwebp.lib;opencv_aruco450.lib;opencv_bgsegm450.lib;opencv_bioinspired450.lib;opencv_calib3d450.lib;opencv_ccalib450.lib;opencv_core450.lib;opencv_dnn450.lib;opencv_dnn_objdetect450.lib;opencv_dpm450.lib;opencv_face450.lib;opencv_features2d450.lib;opencv_flann450.lib;opencv_fuzzy450.lib;opencv_hfs450.lib;opencv_highgui450.lib;opencv_imgcodecs450.lib;opencv_imgproc450.lib;opencv_img_hash450.lib;opencv_line_descriptor450.lib;opencv_ml450.lib;opencv_objdetect450.lib;opencv_optflow450.lib;opencv_phase_unwrapping450.lib;opencv_photo450.lib;opencv_plot450.lib;opencv_quality450.lib;opencv_reg450.lib;opencv_rgbd450.lib;opencv_saliency450.lib;opencv_shape450.lib;opencv_stereo450.lib;opencv_stitching450.lib;opencv_structured_light450.lib;opencv_superres450.lib;opencv_surface_matching450.lib;opencv_text450.lib;opencv_tracking450.lib;opencv_video450.lib;opencv_videoio450.lib;opencv_videostab450.lib;opencv_xfeatures2d450.lib;opencv_ximgproc450.lib;opencv_xobjdetect450.lib;opencv_xphoto450.lib;quirc.lib;zlib.lib;ws2_32.lib;tesseract41.lib;leptonica-1.78.0.lib;gif.lib;jpeg.lib;libpng16.lib;libwebpmux.lib;lzma.lib;tiff.lib;tiffxx.lib;turbojpeg.lib;webp.lib;webpdecoder.lib;webpdemux.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>NotSet</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy "$(LocalDebuggerCommand)" "$(SolutionDir)test\OpenCvSharp.Tests\dll\x86\$(TargetFileName)"
+copy "$(LocalDebuggerCommand)" "$(SolutionDir)test\OpenCvSharp.Tests\$(TargetFileName)"
+copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_ffmpeg450.dll" "$(SolutionDir)test\OpenCvSharp.Tests\dll\x86\opencv_videoio_ffmpeg450.dll"
+copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_ffmpeg450.dll" "$(SolutionDir)test\OpenCvSharp.Tests\opencv_videoio_ffmpeg450.dll"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -205,9 +304,10 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
       <OpenMPSupport>true</OpenMPSupport>
       <DisableSpecificWarnings>4251;4275;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ade.lib;IlmImf.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libopenjp2.lib;libjpeg-turbo.lib;libpng.lib;libprotobuf.lib;libtiff.lib;libwebp.lib;opencv_aruco450.lib;opencv_bgsegm450.lib;opencv_bioinspired450.lib;opencv_calib3d450.lib;opencv_ccalib450.lib;opencv_core450.lib;opencv_dnn450.lib;opencv_dnn_objdetect450.lib;opencv_dpm450.lib;opencv_face450.lib;opencv_features2d450.lib;opencv_flann450.lib;opencv_fuzzy450.lib;opencv_hfs450.lib;opencv_highgui450.lib;opencv_imgcodecs450.lib;opencv_imgproc450.lib;opencv_img_hash450.lib;opencv_line_descriptor450.lib;opencv_ml450.lib;opencv_objdetect450.lib;opencv_optflow450.lib;opencv_phase_unwrapping450.lib;opencv_photo450.lib;opencv_plot450.lib;opencv_quality450.lib;opencv_reg450.lib;opencv_rgbd450.lib;opencv_saliency450.lib;opencv_shape450.lib;opencv_stereo450.lib;opencv_stitching450.lib;opencv_structured_light450.lib;opencv_superres450.lib;opencv_surface_matching450.lib;opencv_text450.lib;opencv_tracking450.lib;opencv_video450.lib;opencv_videoio450.lib;opencv_videostab450.lib;opencv_xfeatures2d450.lib;opencv_ximgproc450.lib;opencv_xobjdetect450.lib;opencv_xphoto450.lib;quirc.lib;zlib.lib;ws2_32.lib;tesseract41.lib;leptonica-1.78.0.lib;gif.lib;jpeg.lib;libpng16.lib;libwebpmux.lib;lzma.lib;tiff.lib;tiffxx.lib;turbojpeg.lib;webp.lib;webpdecoder.lib;webpdemux.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ade.lib;IlmImf.lib;ippicvmt.lib;ippiw.lib;ittnotify.lib;libjpeg-turbo.lib;libopenjp2.lib;libpng.lib;libprotobuf.lib;libtiff.lib;libwebp.lib;opencv_world450.lib;quirc.lib;zlib.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>NotSet</SubSystem>
@@ -220,30 +320,45 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
       <AdditionalOptions>/IGNORE:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(LocalDebuggerCommand)" "$(SolutionDir)test\OpenCvSharp.Tests\dll\x64\$(TargetFileName)"
-copy "$(LocalDebuggerCommand)" "$(SolutionDir)test\OpenCvSharp.Tests\$(TargetFileName)"
-copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_ffmpeg450_64.dll" "$(SolutionDir)test\OpenCvSharp.Tests\opencv_videoio_ffmpeg450_64.dll"
-copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_ffmpeg450_64.dll" "$(SolutionDir)test\OpenCvSharp.Tests\dll\x64\opencv_videoio_ffmpeg450_64.dll"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="aruco.cpp" />
-    <ClCompile Include="bgsegm.cpp" />
+    <ClCompile Include="boards_from_corners.cpp" />
+    <ClCompile Include="board_energy.cpp" />
     <ClCompile Include="calib3d.cpp" />
+    <ClCompile Include="config.cpp" />
     <ClCompile Include="core.cpp" />
-    <ClCompile Include="cuda.cpp" />
+    <ClCompile Include="create_correlation_patch.cpp" />
     <ClCompile Include="dnn.cpp" />
     <ClCompile Include="face.cpp" />
+    <ClCompile Include="filter_board.cpp" />
+    <ClCompile Include="filter_corners.cpp" />
+    <ClCompile Include="find_corners.cpp" />
+    <ClCompile Include="find_modes_meanshift.cpp" />
+    <ClCompile Include="get_image_patch.cpp" />
+    <ClCompile Include="get_init_location.cpp" />
+    <ClCompile Include="grow_board.cpp" />
     <ClCompile Include="highgui.cpp" />
+    <ClCompile Include="image_normalization_and_gradients.cpp" />
     <ClCompile Include="imgcodecs.cpp" />
     <ClCompile Include="imgproc.cpp" />
     <ClCompile Include="img_hash.cpp" />
+    <ClCompile Include="init_board.cpp" />
+    <ClCompile Include="mark_board.cpp" />
     <ClCompile Include="ml.cpp" />
+    <ClCompile Include="NewCylindricalProbeTracker.cpp" />
+    <ClCompile Include="non_maximum_suppression.cpp" />
     <ClCompile Include="objdetect.cpp" />
     <ClCompile Include="flann.cpp" />
     <ClCompile Include="optflow.cpp" />
     <ClCompile Include="photo.cpp" />
+    <ClCompile Include="polynomial_fit.cpp" />
     <ClCompile Include="quality.cpp" />
+    <ClCompile Include="refine_corners.cpp" />
+    <ClCompile Include="score_corners.cpp" />
     <ClCompile Include="shape.cpp" />
     <ClCompile Include="std_string.cpp" />
     <ClCompile Include="std_vector.cpp" />
@@ -254,16 +369,19 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_f
     <ClCompile Include="tracking.cpp" />
     <ClCompile Include="video.cpp" />
     <ClCompile Include="videoio.cpp" />
+    <ClCompile Include="weight_mask.cpp" />
     <ClCompile Include="xfeatures2d.cpp" />
     <ClCompile Include="ximgproc.cpp" />
     <ClCompile Include="xphoto.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aruco.h" />
-    <ClInclude Include="bgsegm.h" />
+    <ClInclude Include="boards_from_corners.h" />
+    <ClInclude Include="board_energy.h" />
     <ClInclude Include="calib3d.h" />
     <ClInclude Include="calib3d_fisheye.h" />
     <ClInclude Include="calib3d_StereoMatcher.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="core.h" />
     <ClInclude Include="core_FileNode.h" />
     <ClInclude Include="core_InputArray.h" />
@@ -273,14 +391,21 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_f
     <ClInclude Include="core_OutputArray.h" />
     <ClInclude Include="core_PCA.h" />
     <ClInclude Include="core_SparseMat.h" />
+    <ClInclude Include="create_correlation_patch.h" />
     <ClInclude Include="dnn.h" />
     <ClInclude Include="dnn_Net.h" />
     <ClInclude Include="face_Facemark.h" />
     <ClInclude Include="face_FaceRecognizer.h" />
-    <ClInclude Include="cuda.h" />
-    <ClInclude Include="cuda_GpuMat.h" />
     <ClInclude Include="features2d_BOW.h" />
+    <ClInclude Include="filter_board.h" />
+    <ClInclude Include="filter_corners.h" />
+    <ClInclude Include="find_corners.h" />
+    <ClInclude Include="find_modes_meanshift.h" />
     <ClInclude Include="flann_IndexParams.h" />
+    <ClInclude Include="get_image_patch.h" />
+    <ClInclude Include="get_init_location.h" />
+    <ClInclude Include="grow_board.h" />
+    <ClInclude Include="image_normalization_and_gradients.h" />
     <ClInclude Include="imgcodecs.h" />
     <ClInclude Include="imgproc_CLAHE.h" />
     <ClInclude Include="features2d_DescriptorMatcher.h" />
@@ -293,6 +418,8 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_f
     <ClInclude Include="imgproc_Subdiv2D.h" />
     <ClInclude Include="img_hash.h" />
     <ClInclude Include="include_opencv.h" />
+    <ClInclude Include="init_board.h" />
+    <ClInclude Include="mark_board.h" />
     <ClInclude Include="ml.h" />
     <ClInclude Include="ml_ANN_MLP.h" />
     <ClInclude Include="ml_Boost.h" />
@@ -302,6 +429,8 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_f
     <ClInclude Include="ml_NormalBayesClassifier.h" />
     <ClInclude Include="ml_StatModel.h" />
     <ClInclude Include="ml_SVM.h" />
+    <ClInclude Include="NewCylindricalProbeTracker.h" />
+    <ClInclude Include="non_maximum_suppression.h" />
     <ClInclude Include="objdetect_QRCodeDetector.h" />
     <ClInclude Include="optflow.h" />
     <ClInclude Include="optflow_motempl.h" />
@@ -315,7 +444,10 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_f
     <ClInclude Include="ml_RTrees.h" />
     <ClInclude Include="photo_HDR.h" />
     <ClInclude Include="photo_Tonemap.h" />
+    <ClInclude Include="polynomial_fit.h" />
     <ClInclude Include="quality.h" />
+    <ClInclude Include="refine_corners.h" />
+    <ClInclude Include="score_corners.h" />
     <ClInclude Include="shape_ShapeDistanceExtractor.h" />
     <ClInclude Include="std_string.h" />
     <ClInclude Include="text.h" />
@@ -334,6 +466,7 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x64\x64\vc16\bin\opencv_videoio_f
     <ClInclude Include="superres.h" />
     <ClInclude Include="video.h" />
     <ClInclude Include="video_background_segm.h" />
+    <ClInclude Include="weight_mask.h" />
     <ClInclude Include="xfeatures2d.h" />
     <ClInclude Include="ximgproc.h" />
     <ClInclude Include="ximgproc_EdgeBoxes.h" />

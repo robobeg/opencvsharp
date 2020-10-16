@@ -9,80 +9,108 @@
 
 #include "include_opencv.h"
 
+
+namespace cv
+{
+    namespace dnn
+    {
+        class CV_EXPORTS_W_SIMPLE Net;
+    }
+}
+
+
 CVAPI(ExceptionStatus) dnn_readNetFromDarknet(const char *cfgFile, const char *darknetModel, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto darknetModelStr = (darknetModel == nullptr) ? cv::String() : cv::String(darknetModel);
     const auto net = cv::dnn::readNetFromDarknet(cfgFile, darknetModelStr);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readNetFromCaffe(const char *prototxt, const char *caffeModel, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto caffeModelStr = (caffeModel == nullptr) ? cv::String() : cv::String(caffeModel);
     const auto net = cv::dnn::readNetFromCaffe(prototxt, caffeModelStr);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readNetFromTensorflow(const char *model, const char *config, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto configStr = (config == nullptr) ? cv::String() : cv::String(config);
     const auto net = cv::dnn::readNetFromTensorflow(model, configStr);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readNetFromTorch(const char *model, const int isBinary, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto net = cv::dnn::readNetFromTorch(model, isBinary != 0);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readNet(const char *model, const char *config, const char *framework, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto configStr = (config == nullptr) ? "" : cv::String(config);
     const auto frameworkStr = (framework == nullptr) ? "" : cv::String(framework);
     const auto net = cv::dnn::readNet(model, configStr, frameworkStr);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readTorchBlob(const char *filename, const int isBinary, cv::Mat **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto blob = cv::dnn::readTorchBlob(filename, isBinary != 0);
     *returnValue = new cv::Mat(blob);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readNetFromModelOptimizer(const char *xml, const char *bin, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto net = cv::dnn::readNetFromModelOptimizer(xml, bin);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readNetFromONNX(const char *onnxFile, cv::dnn::Net **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto net = cv::dnn::readNetFromONNX(onnxFile);
     *returnValue = new cv::dnn::Net(net);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_readTensorFromONNX(const char *path, cv::Mat **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto mat = cv::dnn::readTensorFromONNX(path);
     *returnValue = new cv::Mat(mat);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
@@ -91,8 +119,10 @@ CVAPI(ExceptionStatus) dnn_blobFromImage(
     cv::Mat **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     const auto blob = cv::dnn::blobFromImage(*image, scalefactor, cpp(size), cpp(mean), swapRB != 0, crop != 0);
     *returnValue = new cv::Mat(blob);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
@@ -101,25 +131,31 @@ CVAPI(ExceptionStatus) dnn_blobFromImages(
     cv::Mat **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     std::vector<cv::Mat> imagesVec;
     toVec(images, imagesLength, imagesVec);
 
     const auto blob = cv::dnn::blobFromImages(imagesVec, scalefactor, cpp(size), cpp(mean), swapRB != 0, crop != 0);
     *returnValue = new cv::Mat(blob);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_shrinkCaffeModel(const char *src, const char *dst)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     cv::dnn::shrinkCaffeModel(src, dst);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_writeTextGraph(const char *model, const char *output)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     cv::dnn::writeTextGraph(model, output);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
@@ -128,7 +164,9 @@ CVAPI(ExceptionStatus) dnn_NMSBoxes_Rect(std::vector<cv::Rect> *bboxes, std::vec
     std::vector<int> *indices, const float eta, const int top_k)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     cv::dnn::NMSBoxes(*bboxes, *scores, score_threshold, nms_threshold, *indices, eta, top_k);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
@@ -137,7 +175,9 @@ CVAPI(ExceptionStatus) dnn_NMSBoxes_Rect2d(std::vector<cv::Rect2d> *bboxes, std:
     std::vector<int> *indices, const float eta, const int top_k)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     cv::dnn::NMSBoxes(*bboxes, *scores, score_threshold, nms_threshold, *indices, eta, top_k);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
@@ -146,14 +186,18 @@ CVAPI(ExceptionStatus) dnn_NMSBoxes_RotatedRect(std::vector<cv::RotatedRect> *bb
     std::vector<int> *indices, const float eta, const int top_k)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     cv::dnn::NMSBoxes(*bboxes, *scores, score_threshold, nms_threshold, *indices, eta, top_k);
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) dnn_resetMyriadDevice()
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_DNN
     cv::dnn::resetMyriadDevice();
+#endif//HAVE_OPENCV_DNN
     END_WRAP
 }
 

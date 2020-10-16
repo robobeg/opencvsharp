@@ -8,17 +8,72 @@
 
 #include "include_opencv.h"
 
+
+namespace cv
+{
+    class CV_EXPORTS_W Tracker;
+#ifndef HAVE_OPENCV_TRACKING
+    class CV_EXPORTS_W TrackerKCF
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerMIL
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerBoosting
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerMedianFlow
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerTLD
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerGOTURN
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerMOSSE
+    {
+    public:
+        struct CV_EXPORTS Params;
+    };
+    class CV_EXPORTS_W TrackerCSRT
+    {
+    public:
+        struct CV_EXPORTS Params
+        {
+        };
+    };
+#endif //HAVE_OPENCV_TRACKING
+
+}
+
+
 CVAPI(ExceptionStatus) tracking_Tracker_init(cv::Tracker* tracker, const cv::Mat* image, const MyCvRect2D64f boundingBox, int *returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const bool ret = tracker->init(*image, cpp(boundingBox));
     *returnValue = ret ? 1 : 0;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Tracker_update(cv::Tracker* tracker, const cv::Mat* image, MyCvRect2D64f* boundingBox, int *returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     cv::Rect2d bb = cpp(*boundingBox);
     const bool ret = tracker->update(*image, bb);
     if (ret)
@@ -30,20 +85,25 @@ CVAPI(ExceptionStatus) tracking_Tracker_update(cv::Tracker* tracker, const cv::M
     }
 
     *returnValue = ret ? 1 : 0;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_Tracker_delete(cv::Ptr<cv::Tracker> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_Tracker_get(cv::Ptr<cv::Tracker> *ptr, cv::Tracker **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -53,29 +113,37 @@ CVAPI(ExceptionStatus) tracking_Ptr_Tracker_get(cv::Ptr<cv::Tracker> *ptr, cv::T
 CVAPI(ExceptionStatus) tracking_TrackerKCF_create1(cv::Ptr<cv::TrackerKCF> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerKCF::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 CVAPI(ExceptionStatus) tracking_TrackerKCF_create2(cv::TrackerKCF::Params *parameters, cv::Ptr<cv::TrackerKCF> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerKCF::create(*parameters);
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerKCF_delete(cv::Ptr<cv::TrackerKCF> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerKCF_get(cv::Ptr<cv::TrackerKCF> *ptr, cv::TrackerKCF **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -85,30 +153,38 @@ CVAPI(ExceptionStatus) tracking_Ptr_TrackerKCF_get(cv::Ptr<cv::TrackerKCF> *ptr,
 CVAPI(ExceptionStatus) tracking_TrackerMIL_create1(cv::Ptr<cv::TrackerMIL> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerMIL::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_TrackerMIL_create2(cv::TrackerMIL::Params *parameters, cv::Ptr<cv::TrackerMIL> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerMIL::create(*parameters);
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerMIL_delete(cv::Ptr<cv::TrackerMIL> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerMIL_get(cv::Ptr<cv::TrackerMIL> *ptr, cv::TrackerMIL **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -118,29 +194,37 @@ CVAPI(ExceptionStatus) tracking_Ptr_TrackerMIL_get(cv::Ptr<cv::TrackerMIL> *ptr,
 CVAPI(ExceptionStatus) tracking_TrackerBoosting_create1(cv::Ptr<cv::TrackerBoosting> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerBoosting::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 CVAPI(ExceptionStatus) tracking_TrackerBoosting_create2(cv::TrackerBoosting::Params *parameters, cv::Ptr<cv::TrackerBoosting> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerBoosting::create(*parameters);
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerBoosting_delete(cv::Ptr<cv::TrackerBoosting> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerBoosting_get(cv::Ptr<cv::TrackerBoosting> *ptr, cv::TrackerBoosting **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -150,29 +234,37 @@ CVAPI(ExceptionStatus) tracking_Ptr_TrackerBoosting_get(cv::Ptr<cv::TrackerBoost
 CVAPI(ExceptionStatus) tracking_TrackerMedianFlow_create1(cv::Ptr<cv::TrackerMedianFlow> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerMedianFlow::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 CVAPI(ExceptionStatus) tracking_TrackerMedianFlow_create2(cv::TrackerMedianFlow::Params *parameters, cv::Ptr<cv::TrackerMedianFlow> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerMedianFlow::create(*parameters);
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerMedianFlow_delete(cv::Ptr<cv::TrackerMedianFlow> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerMedianFlow_get(cv::Ptr<cv::TrackerMedianFlow> *ptr, cv::TrackerMedianFlow **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -182,29 +274,37 @@ CVAPI(ExceptionStatus) tracking_Ptr_TrackerMedianFlow_get(cv::Ptr<cv::TrackerMed
 CVAPI(ExceptionStatus) tracking_TrackerTLD_create1(cv::Ptr<cv::TrackerTLD> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerTLD::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 CVAPI(ExceptionStatus) tracking_TrackerTLD_create2(cv::TrackerTLD::Params *parameters, cv::Ptr<cv::TrackerTLD> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerTLD::create(*parameters);
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerTLD_delete(cv::Ptr<cv::TrackerTLD> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerTLD_get(cv::Ptr<cv::TrackerTLD> *ptr, cv::TrackerTLD **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -214,29 +314,37 @@ CVAPI(ExceptionStatus) tracking_Ptr_TrackerTLD_get(cv::Ptr<cv::TrackerTLD> *ptr,
 CVAPI(ExceptionStatus) tracking_TrackerGOTURN_create1(cv::Ptr<cv::TrackerGOTURN> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerGOTURN::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 CVAPI(ExceptionStatus) tracking_TrackerGOTURN_create2(cv::TrackerGOTURN::Params *parameters, cv::Ptr<cv::TrackerGOTURN> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerGOTURN::create(*parameters);
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerGOTURN_delete(cv::Ptr<cv::TrackerGOTURN> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerGOTURN_get(cv::Ptr<cv::TrackerGOTURN> *ptr, cv::TrackerGOTURN **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -246,22 +354,28 @@ CVAPI(ExceptionStatus) tracking_Ptr_TrackerGOTURN_get(cv::Ptr<cv::TrackerGOTURN>
 CVAPI(ExceptionStatus) tracking_TrackerMOSSE_create(cv::Ptr<cv::TrackerMOSSE> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerMOSSE::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerMOSSE_delete(cv::Ptr<cv::TrackerMOSSE> *ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerMOSSE_get(cv::Ptr<cv::TrackerMOSSE> *ptr, cv::TrackerMOSSE **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
@@ -305,6 +419,7 @@ CV_EXTERN_C struct tracker_TrackerCSRT_Params
 cv::TrackerCSRT::Params _tracking_TrackerCSRT_Param_ToCpp(const tracker_TrackerCSRT_Params *params)
 {
     cv::TrackerCSRT::Params p;
+#ifdef HAVE_OPENCV_TRACKING
     p.use_hog = params->use_hog != 0;
     p.use_color_names = params->use_color_names != 0;
     p.use_gray = params->use_gray != 0;
@@ -332,58 +447,72 @@ cv::TrackerCSRT::Params _tracking_TrackerCSRT_Param_ToCpp(const tracker_TrackerC
     p.scale_lr = params->scale_lr;
     p.scale_step = params->scale_step;
     p.psr_threshold = params->psr_threshold;
+#endif//HAVE_OPENCV_TRACKING
     return p;
 }
 
 CVAPI(ExceptionStatus) tracking_TrackerCSRT_create1(cv::Ptr<cv::TrackerCSRT> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = cv::TrackerCSRT::create();
     *returnValue = clone(p);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_TrackerCSRT_create2(tracker_TrackerCSRT_Params* parameters, cv::Ptr<cv::TrackerCSRT> **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = _tracking_TrackerCSRT_Param_ToCpp(parameters);
     const auto obj = cv::TrackerCSRT::create(p);
     *returnValue = clone(obj);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerCSRT_delete(cv::Ptr<cv::TrackerCSRT>* ptr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     delete ptr;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_Ptr_TrackerCSRT_get(cv::Ptr<cv::TrackerCSRT>* ptr, cv::TrackerCSRT **returnValue)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     *returnValue = ptr->get();
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_TrackerCSRT_setInitialMask(cv::TrackerCSRT *tracker, cv::_InputArray *mask)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     tracker->setInitialMask(*mask);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_TrackerCSRT_Params_write(tracker_TrackerCSRT_Params* params, cv::FileStorage *fs)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     const auto p = _tracking_TrackerCSRT_Param_ToCpp(params);
     p.write(*fs);
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 
 CVAPI(ExceptionStatus) tracking_TrackerCSRT_Params_read(tracker_TrackerCSRT_Params* params, char *window_function_buf, cv::FileNode* fn)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_TRACKING
     cv::TrackerCSRT::Params p;
     p.read(*fn);
 
@@ -414,6 +543,7 @@ CVAPI(ExceptionStatus) tracking_TrackerCSRT_Params_read(tracker_TrackerCSRT_Para
     params->scale_lr = p.scale_lr;
     params->scale_step = p.scale_step;
     params->psr_threshold = p.psr_threshold;
+#endif//HAVE_OPENCV_TRACKING
     END_WRAP
 }
 

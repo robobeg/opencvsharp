@@ -16,7 +16,9 @@ CVAPI(ExceptionStatus) optflow_calcOpticalFlowSF1(
     int maxFlow)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     cv::optflow::calcOpticalFlowSF(*from, *to, *flow, layers, averagingBlockSize, maxFlow);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 
@@ -39,9 +41,11 @@ CVAPI(ExceptionStatus) optflow_calcOpticalFlowSF2(
     double speedUpThr)
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     cv::optflow::calcOpticalFlowSF(*from, *to, *flow, layers, averagingBlockSize, maxFlow,
         sigmaDist, sigmaColor, postprocessWindow, sigmaDistFix, sigmaColorFix,
         occThr, upscaleAveragingRadius, upscaleSigmaDist, upscaleSigmaColor, speedUpThr);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 
@@ -50,9 +54,11 @@ CVAPI(ExceptionStatus) optflow_calcOpticalFlowSparseToDense(
     int grid_step, int k, float sigma, int use_post_proc, float fgs_lambda, float fgs_sigma )
 {
     BEGIN_WRAP
+#ifdef HAVE_OPENCV_OPTFLOW
     cv::optflow::calcOpticalFlowSparseToDense(
         *from, *to, *flow, 
         grid_step, k, sigma, use_post_proc != 0, fgs_lambda, fgs_sigma);
+#endif//HAVE_OPENCV_OPTFLOW
     END_WRAP
 }
 

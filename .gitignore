@@ -124,3 +124,6 @@ UpgradeLog*.XML
 /test/OpenCvSharp.Tests/*.dll
 Help
 /tesseract_files
+/tool/OpenCvSharp.NupkgBetaRemover/obj
+/tool/OpenCvSharp.NupkgBetaRemover/bin
+/packages

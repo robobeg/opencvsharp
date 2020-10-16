@@ -43,16 +43,10 @@
     <ClCompile Include="xfeatures2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cuda.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="optflow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="face.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bgsegm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="videoio.cpp">
@@ -89,6 +83,66 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="quality.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="refine_corners.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="score_corners.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="weight_mask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="board_energy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="boards_from_corners.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="create_correlation_patch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filter_board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="filter_corners.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="find_corners.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="find_modes_meanshift.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="get_image_patch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="get_init_location.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="grow_board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="image_normalization_and_gradients.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="init_board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mark_board.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NewCylindricalProbeTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="non_maximum_suppression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="polynomial_fit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -192,12 +246,6 @@
     <ClInclude Include="xfeatures2d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cuda.h">
-      <Filter>Header Files\cuda</Filter>
-    </ClInclude>
-    <ClInclude Include="cuda_GpuMat.h">
-      <Filter>Header Files\cuda</Filter>
-    </ClInclude>
     <ClInclude Include="optflow_motempl.h">
       <Filter>Header Files\optflow</Filter>
     </ClInclude>
@@ -206,9 +254,6 @@
     </ClInclude>
     <ClInclude Include="calib3d_StereoMatcher.h">
       <Filter>Header Files\calib3d</Filter>
-    </ClInclude>
-    <ClInclude Include="bgsegm.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ml_SVM.h">
       <Filter>Header Files\ml</Filter>
@@ -345,6 +390,66 @@
     <ClInclude Include="tracking_UnscentedKalmanFilter.h">
       <Filter>Header Files\tracking</Filter>
     </ClInclude>
+    <ClInclude Include="NewCylindricalProbeTracker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="non_maximum_suppression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="board_energy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="boards_from_corners.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="create_correlation_patch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter_board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="filter_corners.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="find_corners.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="find_modes_meanshift.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="get_image_patch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="get_init_location.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="grow_board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="image_normalization_and_gradients.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="init_board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mark_board.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="weight_mask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="polynomial_fit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="refine_corners.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="score_corners.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -381,9 +486,6 @@
     </Filter>
     <Filter Include="Header Files\calib3d">
       <UniqueIdentifier>{b7573dcb-d145-4466-99d1-64124c7c5211}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\cuda">
-      <UniqueIdentifier>{381d4d4f-0c83-4c35-a777-fb3214db09f9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\shape">
       <UniqueIdentifier>{eed306c8-8a82-4f4f-b9d5-447f88befafa}</UniqueIdentifier>
