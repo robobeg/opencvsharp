@@ -128,6 +128,8 @@ namespace NewCylindricalProbeTrackerNamespace
 	{
 		cv::Mat* m_pMatCamera;
 		cv::Mat* m_pMatImageGray;
+		cv::Mat* m_pMatImageOriginal;
+		std::vector<float>* m_pVecEyeGaze;
 		IUnknown* m_pSpatialCoordinateSystem;
 		int64_t m_i64FrameTimestamp;
 
@@ -135,6 +137,8 @@ namespace NewCylindricalProbeTrackerNamespace
 			: m_i64FrameTimestamp(0)
 			, m_pMatCamera(nullptr)
 			, m_pMatImageGray(nullptr)
+			, m_pMatImageOriginal(nullptr)
+			, m_pVecEyeGaze(nullptr)
 			, m_pSpatialCoordinateSystem(nullptr)
 		{
 		}
@@ -1023,6 +1027,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			IUnknown* m_pPrevSpatialCoordinateSystem;
 			int64_t	    m_i64PrevTimestamp;
 			cv::Mat		m_prevGray;
+			cv::Mat		m_prevOriginal;
 			std::vector<cv::Mat>	m_vecPrevGrayPyr;
 			uint		m_uExternalTrackType;
 
@@ -1053,7 +1058,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			std::vector<OpenCVRect>
 				m_prevAuxiliaryMarkersImgBound;
 			std::vector<float> m_prevAuxiliaryMarkersEdgeMax;
-
+			std::vector<float> m_vecEyeGaze;
 			WorkContext()
 				: /*m_curCameraTransform(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1)
 				, m_curCameraRotation(0,0,0,1),*/
@@ -1069,6 +1074,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				, m_pPrevSpatialCoordinateSystem()
 				, m_i64PrevTimestamp(0)
 				, m_prevGray()
+				, m_prevOriginal()
 				, m_vecPrevGrayPyr()
 				, m_uExternalTrackType(0)
 
@@ -1089,6 +1095,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				, m_prevCylinderMarkerEdgeMax(0)
 				, m_prevAuxiliaryMarkersImgBound()
 				, m_prevAuxiliaryMarkersEdgeMax()
+				, m_vecEyeGaze()
 			{
 			}
 
@@ -1120,6 +1127,7 @@ namespace NewCylindricalProbeTrackerNamespace
 					m_i64PrevTimestamp = rhs_.m_i64PrevTimestamp;
 
 					rhs_.m_prevGray.copyTo(this->m_prevGray);
+					rhs_.m_prevOriginal.copyTo(this->m_prevOriginal);
 					this->m_vecPrevGrayPyr.resize(rhs_.m_vecPrevGrayPyr.size());
 					for (size_t i = 0; i < rhs_.m_vecPrevGrayPyr.size(); i++)
 					{
@@ -1153,6 +1161,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 					this->m_prevAuxiliaryMarkersImgBound = rhs_.m_prevAuxiliaryMarkersImgBound;
 					this->m_prevAuxiliaryMarkersEdgeMax = rhs_.m_prevAuxiliaryMarkersEdgeMax;
+					this->m_vecEyeGaze = rhs_.m_vecEyeGaze;
 				}
 				return *this;
 			}
@@ -2172,6 +2181,7 @@ namespace NewCylindricalProbeTrackerNamespace
 							if (bUseDetectResult == true)
 							{
 								m_context__detect.m_prevGray.copyTo(m_context__track.m_prevGray);
+								m_context__detect.m_prevOriginal.copyTo(m_context__track.m_prevOriginal);
 								m_iTrackSkipFrameCounter__track = 0;
 							}
 							m_context__track.m_uPrevValidTrackType = uPrevMainMarker;
@@ -2224,6 +2234,8 @@ namespace NewCylindricalProbeTrackerNamespace
 
 								m_info__track.m_pMatCamera->copyTo(m_context__detect.m_matCamera);
 								m_info__track.m_pMatImageGray->copyTo(m_context__detect.m_prevGray);
+								m_info__track.m_pMatImageOriginal->copyTo(m_context__detect.m_prevOriginal);
+								
 								pPrevDetectSpacialCoordinateSystem = m_context__detect.m_pPrevSpatialCoordinateSystem;
 								m_context__detect.m_pPrevSpatialCoordinateSystem = m_info__track.m_pSpatialCoordinateSystem;
 								if (m_context__detect.m_pPrevSpatialCoordinateSystem != nullptr)
@@ -2275,6 +2287,8 @@ namespace NewCylindricalProbeTrackerNamespace
 									m_context__detect.m_iPrevMarkerIndex = -1;
 									m_context__detect.m_iPrevMarkerCount = 0;
 								}
+								std::vector<float> vecFrameEyeGaze = *m_info__track.m_pVecEyeGaze;
+								m_context__detect.m_vecEyeGaze = vecFrameEyeGaze;
 
 								m_uContextStamp__track++;
 								if (m_uContextStamp__track == 0)
@@ -2305,7 +2319,7 @@ namespace NewCylindricalProbeTrackerNamespace
 					{
 						m_info__track.m_pMatCamera->copyTo(m_context__track.m_matCamera);
 
-						if (trackMarkerNew__track(m_context__track, *m_info__track.m_pMatImageGray, matColor, m_info__track.m_pSpatialCoordinateSystem, m_info__track.m_i64FrameTimestamp, /*out*/ m_lastTrackedPose_m_v3Position__track, /*out*/ m_lastTrackedPose_m_qOrientation__track))
+						if (trackMarkerNew__track(m_context__track, *m_info__track.m_pMatImageGray, *m_info__track.m_pMatImageOriginal, matColor, m_info__track.m_pSpatialCoordinateSystem, m_info__track.m_i64FrameTimestamp, /*out*/ m_lastTrackedPose_m_v3Position__track, /*out*/ m_lastTrackedPose_m_qOrientation__track))
 						{
 							m_context__track.m_uExternalTrackType = 0;
 						}
@@ -2329,7 +2343,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 					m_info__track.m_pMatCamera->copyTo(m_context__track.m_matCamera);
 
-					if (detectMarkerNew__detect(m_context__track, *m_info__track.m_pMatImageGray, matColor, m_info__track.m_pSpatialCoordinateSystem, m_info__track.m_i64FrameTimestamp, /*out*/ m_lastTrackedPose_m_v3Position__track, /*out*/ m_lastTrackedPose_m_qOrientation__track))
+					if (detectMarkerNew__detect(m_context__track, *m_info__track.m_pMatImageGray, *m_info__track.m_pMatImageOriginal, matColor, m_info__track.m_pSpatialCoordinateSystem, m_info__track.m_i64FrameTimestamp, /*out*/ m_lastTrackedPose_m_v3Position__track, /*out*/ m_lastTrackedPose_m_qOrientation__track))
 					{
 					}
 					else
@@ -2402,6 +2416,11 @@ namespace NewCylindricalProbeTrackerNamespace
 				delete m_info__track.m_pMatImageGray;
 				m_info__track.m_pMatImageGray = nullptr;
 			}
+			if ( m_info__track.m_pMatImageOriginal)
+			{
+				delete m_info__track.m_pMatImageOriginal;
+				m_info__track.m_pMatImageOriginal = nullptr;
+			}
 			if (m_info__track.m_pSpatialCoordinateSystem != nullptr)
 			{
 				m_info__track.m_pSpatialCoordinateSystem->Release();
@@ -2461,7 +2480,7 @@ namespace NewCylindricalProbeTrackerNamespace
 						Vector3 pos(0, 0, 0);
 						Quaternion orient(0, 0, 0, 1);
 						//Debug.Log("Enter : detectMarkerNew__detect");
-						bool bRet = detectMarkerNew__detect(m_context__detect, m_context__detect.m_prevGray, cv::Mat()
+						bool bRet = detectMarkerNew__detect(m_context__detect, m_context__detect.m_prevGray, m_context__detect.m_prevOriginal, cv::Mat()
 							, m_context__detect.m_pPrevSpatialCoordinateSystem, m_context__detect.m_i64PrevTimestamp
 							, /*out*/ pos, /*out*/ orient);
 						//Debug.Log("Exit : detectMarkerNew__detect " + ((bRet) ? "success" : "fail"));
@@ -7336,7 +7355,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 
 		void refineCyclicCorners(cv::Mat& matGray, int iPatternIndex, int iPatternCount, const std::vector<MarkerInfo>& markerInfo, std::vector<MarkerRuntime>& markerRuntime
-			, std::vector<int>& listCornerCounter, std::vector<Point2>& listCorners)
+			, std::vector<int>& listCornerCounter, std::vector<Point2>& listCorners, double xScale = 1.0, double yScale = 1.0)
 		{
 			int iPatternNums = (int)markerInfo.size();
 			if (iPatternCount <= 0 || iPatternIndex < 0 || iPatternIndex >= iPatternNums)
@@ -7390,6 +7409,12 @@ namespace NewCylindricalProbeTrackerNamespace
 						listCorners.push_back(markerRuntime[index].m_tmpImgPoints[c]);
 					}
 				}
+				
+				for (int iCornerIndex = 0; iCornerIndex < listCorners.size(); ++iCornerIndex)
+				{
+					listCorners[iCornerIndex].x *= xScale;
+					listCorners[iCornerIndex].y *= yScale;
+				}
 
 				//Imgproc.cornerSubPix(m_curGray, matCorners, new Size(dilation+3, dilation+3), new Size(-1, -1),
 				cv::cornerSubPix(matGray, listCorners
@@ -7416,7 +7441,7 @@ namespace NewCylindricalProbeTrackerNamespace
 #ifdef USE_LIBCBDETECTOR
 
 		void refinePlaneCorners(int iXWidth, cv::Mat& matGray, const std::vector<MarkerInfo>& markerInfo, std::vector<MarkerRuntime>& markerRuntime
-			, std::vector<int>& listCornerCounter, std::vector<Point2>& listCorners)
+			, std::vector<int>& listCornerCounter, std::vector<Point2>& listCorners, double xScale = 1.0, double yScale = 1.0 )
 		{
 			if (markerRuntime.size() != markerInfo.size())
 				return;
@@ -7459,7 +7484,12 @@ namespace NewCylindricalProbeTrackerNamespace
 						}
 					}
 				}
-
+				
+				for (int iCornerIndex = 0; iCornerIndex < listCorners.size(); ++iCornerIndex)
+				{
+					listCorners[iCornerIndex].x *= xScale;
+					listCorners[iCornerIndex].y *= yScale;
+				}
 				cv::cornerSubPix(matGray, listCorners
 					, Size(err + m_parameters__fixed.cornerPixelTolerance, err + m_parameters__fixed.cornerPixelTolerance)
 					, Size(-1, -1)
@@ -8745,7 +8775,7 @@ namespace NewCylindricalProbeTrackerNamespace
 		//	return ibestoffset;
 		//}
 
-		bool detectMarkerNew__detect(WorkContext& context_, cv::Mat& curGray_, cv::Mat& curColor_, IUnknown* pSpatialCoordinate, int64_t i64Timestamp
+		bool detectMarkerNew__detect(WorkContext& context_, cv::Mat& curGray_, cv::Mat& originalGray_, cv::Mat& curColor_, IUnknown* pSpatialCoordinate, int64_t i64Timestamp
 			, Vector3& position_, Quaternion& orientation_)
 		{
 			position_ = Vector3(0, 0, 0);
@@ -8754,6 +8784,9 @@ namespace NewCylindricalProbeTrackerNamespace
 
 			if (curGray_.empty() || context_.m_uExternalTrackType == 0)
 				return false;
+
+			double xScale = (double)originalGray_.cols / (double)curGray_.cols;
+			double yScale = (double)originalGray_.rows / (double)curGray_.rows;
 
 			bool bLastDetectPoseValid = false;
 			bool bTryValid = false;
@@ -8874,6 +8907,24 @@ namespace NewCylindricalProbeTrackerNamespace
 				y = y0;
 				x_1 = x1;
 				y_1 = y1;
+				if (context_.m_vecEyeGaze.empty() == false)
+				{
+					int centerX = width * context_.m_vecEyeGaze[0];
+					int centerY = height * context_.m_vecEyeGaze[1];
+
+					int iHalfWidth = (x_1 - x) / 2;
+					int iHalfHeight = (y_1 - y) / 2;
+
+					x = centerX - iHalfWidth;
+					y = centerY - iHalfHeight;
+					x_1 = centerX + iHalfWidth;
+					y_1 = centerY + iHalfHeight;
+				}
+
+				context_.m_prevImgBound.x = x0;
+				context_.m_prevImgBound.y = y0;
+				context_.m_prevImgBound.width = x1 - x0;
+				context_.m_prevImgBound.height = y1 - y0;
 
 				x = std::max(0, x);
 				y = std::max(0, y);
@@ -9535,8 +9586,8 @@ namespace NewCylindricalProbeTrackerNamespace
 					if (markerPatterns[(int)MarkerType_CYLINDER] != nullptr)
 					{
 						update2Dcollect3DPoints(m_parameters__fixed.markerCodeLength, markerPatterns[(int)MarkerType_CYLINDER], modelPointsRuntime, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes);
-						refineCyclicCorners(curGray_, markerPatterns[(int)MarkerType_CYLINDER]->pattern_index, markerPatterns[(int)MarkerType_CYLINDER]->pattern_count, m_cylinderarkerInfos__fixed
-							, context_.m_cylinderMarkerRuntimes, m_veciTemp__detect, m_vecp2Temp__detect);
+						refineCyclicCorners(originalGray_, markerPatterns[(int)MarkerType_CYLINDER]->pattern_index, markerPatterns[(int)MarkerType_CYLINDER]->pattern_count, m_cylinderarkerInfos__fixed
+							, context_.m_cylinderMarkerRuntimes, m_veciTemp__detect, m_vecp2Temp__detect, xScale, yScale);
 						collect2DPoints(m_parameters__fixed.markerCodeLength, markerPatterns[(int)MarkerType_CYLINDER], imgPointsRuntime, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes);
 					}
 
@@ -9547,7 +9598,7 @@ namespace NewCylindricalProbeTrackerNamespace
 							update2Dcollect3DPoints(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength,
 								markerPatterns[(int)MarkerType_AUX_BASE + aux], modelPointsRuntime, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]);
 							refinePlaneCorners(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength,
-								curGray_, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux], m_veciTemp__detect, m_vecp2Temp__detect);
+								originalGray_, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux], m_veciTemp__detect, m_vecp2Temp__detect, xScale, yScale);
 							collect2DPoints(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength,
 								markerPatterns[(int)MarkerType_AUX_BASE + aux], imgPointsRuntime, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]);
 							if (markerPatterns[(int)MarkerType_CYLINDER] != nullptr)
@@ -9602,9 +9653,9 @@ namespace NewCylindricalProbeTrackerNamespace
 							//{
 							//simplifyCylinderPattern(markerPatterns[(int)MarkerType_CYLINDER]);
 							update2Dcollect3DPoints(m_parameters__fixed.markerCodeLength, markerPatterns[(int)MarkerType_CYLINDER], modelPointsRuntime, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes);
-							refineCyclicCorners(curGray_, markerPatterns[(int)MarkerType_CYLINDER]->pattern_index, markerPatterns[(int)MarkerType_CYLINDER]->pattern_count
+							refineCyclicCorners(originalGray_, markerPatterns[(int)MarkerType_CYLINDER]->pattern_index, markerPatterns[(int)MarkerType_CYLINDER]->pattern_count
 								, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes
-								, m_veciTemp__detect, m_vecp2Temp__detect);
+								, m_veciTemp__detect, m_vecp2Temp__detect, xScale, yScale);
 							collect2DPoints(m_parameters__fixed.markerCodeLength, markerPatterns[(int)MarkerType_CYLINDER], imgPointsRuntime, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes);
 							//}
 
@@ -9748,7 +9799,7 @@ namespace NewCylindricalProbeTrackerNamespace
 								std::vector<VerifyProjectionRet>& listResult = m_vecVerifyProjectionRet__detect;
 								listResult.clear();
 								OpenCVRect rectAll;
-								if (computeAndVerifyReprojection(context_, curGray_, matRotation, matTransform, matProjection, false
+								if (computeAndVerifyReprojection(context_, originalGray_, matRotation, matTransform, matProjection, false
 									, (trackTry == 0) ? CVRUPDATE_UPDATE : CVRUPDATE_IF_VALID, /*ref*/ pattern_index, /*ref*/ pattern_count
 									, /*ref*/ uTrackType, /*out*/uPossibleTrackType, /*out*/dMaxEdge, /*out*/rectAll, listResult
 									, m_veciTemp__detect, m_vecbyTemp__detect, m_veci2Temp__detect, m_vecbTemp__detect) == false)
@@ -9861,6 +9912,9 @@ namespace NewCylindricalProbeTrackerNamespace
 						context_.m_uExternalTrackType = 0;
 						if (curGray_.ptr<byte>() != context_.m_prevGray.ptr<byte>())
 							curGray_.copyTo(context_.m_prevGray);
+
+						if (originalGray_.ptr<byte>() != context_.m_prevOriginal.ptr<byte>())
+							originalGray_.copyTo(context_.m_prevOriginal);
 
 						context_.m_iPrevMarkerIndex = iTryPrevMarkerIndex;
 						context_.m_iPrevMarkerCount = iTryPrevMarkerCount;
@@ -9977,12 +10031,12 @@ namespace NewCylindricalProbeTrackerNamespace
 
 		}
 
-		bool trackMarkerNew__track(WorkContext& context_, cv::Mat& matCurGray_, cv::Mat& matCurColor_, IUnknown* pSpatialCoordinate, int64_t i64Timestamp, /*out*/Vector3& position_, /*out*/Quaternion& orientation_)
+		bool trackMarkerNew__track(WorkContext& context_, cv::Mat& matCurGray_, cv::Mat& matCurOriginal_, cv::Mat& matCurColor_, IUnknown* pSpatialCoordinate, int64_t i64Timestamp, /*out*/Vector3& position_, /*out*/Quaternion& orientation_)
 		{
 			position_ = Vector3(0, 0, 0);
 			orientation_ = Quaternion(0, 0, 0, 1);
 
-			if (matCurGray_.empty() == true)
+			if (matCurGray_.empty() == true || matCurOriginal_.empty() == true)
 			{
 				return false;
 			}
@@ -10037,6 +10091,11 @@ namespace NewCylindricalProbeTrackerNamespace
 			{
 				return false;
 			}
+
+			double xScale = (double)matCurOriginal_.cols / (double)matCurGray_.cols;
+			double yScale = (double)matCurOriginal_.rows / (double)matCurGray_.rows;
+			double invXScale = 1.0 / xScale;
+			double invYScale = 1.0 / yScale;
 
 			Size winSize(32, 32);
 			std::vector<cv::Mat> vecCurGrayPyr;
@@ -10137,6 +10196,12 @@ namespace NewCylindricalProbeTrackerNamespace
 				std::vector<float>& errArray = m_opticalFlowErrRuntime__track;
 				errArray.clear();
 
+				for (int i = 0; i < prevPointsList.size(); ++i)
+				{					
+					prevPointsList[i].x *= invXScale;
+					prevPointsList[i].y *= invYScale;
+				}
+
 				cv::calcOpticalFlowPyrLK(context_.m_vecPrevGrayPyr, vecCurGrayPyr, prevPointsList, curPointsList, /*out*/_status, /*out*/errArray, winSize, 3);
 				if (_status.size() != prevPointsList.size() || curPointsList.size() != prevPointsList.size())
 					return false;
@@ -10226,6 +10291,12 @@ namespace NewCylindricalProbeTrackerNamespace
 						}
 					}
 					// FRONT, BACK 이 둘 다 들어있으면 안 됨
+				}
+
+				for (int i = 0; i < prevPointsList.size(); ++i)
+				{
+					prevPointsList[i].x *= invXScale;
+					prevPointsList[i].y *= invYScale;
 				}
 
 				std::vector<Point2>& _curPoints = m_vecp2Temp__track;
@@ -10543,8 +10614,8 @@ namespace NewCylindricalProbeTrackerNamespace
 
 			if (((uPrevValidType | context_.m_uExternalTrackType) & (uint)MarkerTypeFlag_CYLINDER) != 0)
 			{
-				refineCyclicCorners(matCurGray_, context_.m_iPrevMarkerIndex, context_.m_iPrevMarkerCount, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes
-					, m_veciTemp__track, m_vecp2Temp__track);
+				refineCyclicCorners(matCurOriginal_, context_.m_iPrevMarkerIndex, context_.m_iPrevMarkerCount, m_cylinderarkerInfos__fixed, context_.m_cylinderMarkerRuntimes
+					, m_veciTemp__track, m_vecp2Temp__track, xScale, yScale);
 			}
 			for (int aux = 0; aux < numaux; aux++)
 			{
@@ -10553,8 +10624,8 @@ namespace NewCylindricalProbeTrackerNamespace
 				{
 					//if ( (m_uAuxUniqueMarkerMask__fixed & flag ) != 0 )
 					refinePlaneCorners(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength,
-						matCurGray_, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]
-						, m_veciTemp__track, m_vecp2Temp__track);
+						matCurOriginal_, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]
+						, m_veciTemp__track, m_vecp2Temp__track, xScale, yScale);
 					//else
 					//	refineBlockCorners(matCurGray_, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]);
 				}
@@ -10954,7 +11025,7 @@ namespace NewCylindricalProbeTrackerNamespace
 							std::vector<VerifyProjectionRet>& listResult = m_vecVerifyProjectionRet__track;
 							listResult.clear();
 							OpenCVRect rectAll;
-							if (computeAndVerifyReprojection(context_, matCurGray_, matRotation, matTransform, matProjection, true, CVRUPDATE_IF_VALID
+							if (computeAndVerifyReprojection(context_, matCurOriginal_, matRotation, matTransform, matProjection, true, CVRUPDATE_IF_VALID
 								, /*ref*/ pattern_index, /*ref*/ pattern_count, /*ref*/ uTrackType, /*out*/uPossibleTrackType
 								, /*out*/dMaxEdge, /*out*/rectAll, listResult, m_veciTemp__track, m_vecbyTemp__track
 								, m_veci2Temp__track, m_vecbTemp__track) == false)
