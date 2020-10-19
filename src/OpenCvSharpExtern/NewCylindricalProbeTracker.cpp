@@ -8594,7 +8594,10 @@ namespace NewCylindricalProbeTrackerNamespace
 			}
 
 
-			bool bDetectValid = (uTrackType & m_uMarkerMask__fixed) != 0;
+			bool bDetectValid = (uTrackType & (unsigned) MarkerTypeFlag_CYLINDER) != 0;
+			//(uTrackType& m_uMarkerMask__fixed) != 0;
+			//MarkerTypeFlag_CYLINDER
+
 			bool bUpdate = eUpdate == CVRUPDATE_UPDATE || (eUpdate == CVRUPDATE_IF_VALID && bDetectValid == true);
 
 

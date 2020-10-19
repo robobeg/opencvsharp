@@ -39,21 +39,29 @@
 
 namespace cbdetect {
 
-void find_corners_reiszed(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_resized, Corner& corners_resized, const Params& params) {
+void find_corners_resized(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_resized, Corner& corners_resized, const Params& params) {
 
     corners_resized.reset();
 
 
   // resize image
   float scale = 0;
-  if(img_gray.rows < 640 || img_gray.cols < 480) {
+  if(img_gray.rows < 640 || img_gray.cols < 480) 
+  {
     scale = 2.0f;
-  } else if(img_gray.rows >= 640 || img_gray.cols >= 480) {
+  } 
+  else 
+  if(img_gray.rows >= 640 || img_gray.cols >= 480) 
+  {
     scale = 0.5f;
-  } else {
+  } 
+  else
+  {
     return;
   }
-  cv::resize(img_gray, img_gray_resized, cv::Size(img_gray.cols * scale, img_gray.rows * scale), 0, 0, cv::INTER_LINEAR);
+
+  cv::Size sizeResized = cv::Size(img_gray.cols * scale, img_gray.rows * scale);
+  cv::resize(img_gray, img_gray_resized, sizeResized, 0, 0, cv::INTER_LINEAR);
 
   cv::Mat& img_norm = corners_resized.img_norm;
   img_gray_resized.convertTo(img_norm, CV_32F, 1 / 255.0, 0);
@@ -97,7 +105,8 @@ void find_corners_reiszed(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_
   //}
 
   // merge corners
-  std::for_each(corners_resized.p.begin(), corners_resized.p.end(), [&scale](auto& p) { p /= scale; });
+  cv::Size2f invScale((float) img_gray.cols /(float) sizeResized.width, (float) img_gray.rows / (float)sizeResized.height);
+  std::for_each(corners_resized.p.begin(), corners_resized.p.end(), [&invScale](auto& p) { p.x *= invScale.width; p.y *= invScale.height; });
   // std::for_each(corners_resized.r.begin(), corners_resized.r.end(), [&scale](auto &r) { r = (float) r / scale; });
   float min_dist_thr = scale > 1 ? 3 : 5;
   for(int i = 0; i < corners_resized.p.size(); ++i) {
@@ -171,7 +180,7 @@ void find_corners(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_resized,
   //}
 
   // resize image to detect more corners
-  find_corners_reiszed(img_gray, corners, img_gray_resized, corners_resized, params);
+  find_corners_resized(img_gray, corners, img_gray_resized, corners_resized, params);
   //if(params.show_processing) {
   //  printf("Merging corners (%d x %d) ... %lu\n", img_norm.cols, img_norm.rows, corners.p.size());
   //}
