@@ -1228,8 +1228,13 @@ namespace NewCylindricalProbeTrackerNamespace
 		BoundPoints				m_newBoundPoints__mutex;
 		int                     m_iBoundPointsStamp__mutex;
 
+		std::mutex				m_mutexNewEyeGazePoints__mutex;
+		std::vector<float>		m_vecEyeGazePoints__mutex;
+		int						m_iEyeGazePointsStamp__mutex;
+
 		int						m_iBoundPointStamp__detect;
 
+		int						m_iEyeGazeStamp__detect;
 		uint			m_uContextStamp__track;
 		WorkContext		m_context__track;
 
@@ -1375,6 +1380,8 @@ namespace NewCylindricalProbeTrackerNamespace
 			, m_mutexNewBoundPoints__mutex()
 			, m_newBoundPoints__mutex()
 			, m_iBoundPointsStamp__mutex(0)
+			, m_iEyeGazePointsStamp__mutex(0)
+
 
 			, m_uContextStamp__track(0)
 			, m_context__track()
@@ -1424,6 +1431,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 			, m_vecBitInfoBase__detect()
 			, m_iBoundPointStamp__detect(0)
+			, m_iEyeGazeStamp__detect(0)
 #ifndef USE_LIBCBDETECTOR
 			, m_vecLabelQuadGroupData__detect()
 #endif USE_LIBCBDETECTOR
@@ -2517,7 +2525,22 @@ namespace NewCylindricalProbeTrackerNamespace
 			m_iBoundPointsStamp__mutex = iStamp;
 		}
 
+		void SetEyeGazePoints(std::vector<float>* pVector)
+		{
+			if (pVector != nullptr)
+			{
+				std::lock_guard<std::mutex> lock(m_mutexNewEyeGazePoints__mutex);
+				m_vecEyeGazePoints__mutex = *pVector;
+				int iStamp = m_iEyeGazePointsStamp__mutex + 1;
+				if (iStamp == 0)
+				{
+					iStamp = 1;
+				}
+				m_iEyeGazePointsStamp__mutex = iStamp;
+			}
+			
 
+		}
 		static float estimateFittingCircle(float x1, float y1, float x2, float y2, float x3, float y3
 			, float& cx, float& cy)
 		{
@@ -8910,13 +8933,23 @@ namespace NewCylindricalProbeTrackerNamespace
 				y = y0;
 				x_1 = x1;
 				y_1 = y1;
-				if (context_.m_vecEyeGaze.empty() == false)
-				{
-					int centerX = width * context_.m_vecEyeGaze[0];
-					int centerY = height * context_.m_vecEyeGaze[1];
 
-					int iHalfWidth = (x_1 - x) / 2;
-					int iHalfHeight = (y_1 - y) / 2;
+				int iNewBoundStamp = m_iEyeGazePointsStamp__mutex;
+				if (iNewBoundStamp != m_iEyeGazeStamp__detect					
+					&& m_mutexNewEyeGazePoints__mutex.try_lock() == true
+					)
+				{
+
+					m_iEyeGazeStamp__detect = iNewBoundStamp;
+					std::vector<float> tempEyeGaze = m_vecEyeGazePoints__mutex;
+					m_mutexNewEyeGazePoints__mutex.unlock();
+
+
+					int centerX = width * tempEyeGaze[0];
+					int centerY = height * tempEyeGaze[1];
+
+					int iHalfWidth = context_.m_prevImgBound.width / 2;
+					int iHalfHeight = context_.m_prevImgBound.height / 2;
 
 					x = centerX - iHalfWidth;
 					y = centerY - iHalfHeight;
@@ -11378,6 +11411,19 @@ CVAPI(ExceptionStatus) NewCylindricalProbeTracker_delete(NewCylindricalProbeTrac
 	END_WRAP
 }
 
+
+CVAPI(ExceptionStatus) NewCylindricalProbeTracker_setEyeGazePoints(NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker* self, std::vector<float>* pVector)
+{
+	BEGIN_WRAP
+		if (self != nullptr)
+		{
+			if (pVector != nullptr)
+			{
+				self->SetEyeGazePoints(pVector);
+			}
+		}
+	END_WRAP
+}
 
 CVAPI(ExceptionStatus) NewCylindricalProbeTracker_update(NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker* self, cv::Mat* mat)
 {

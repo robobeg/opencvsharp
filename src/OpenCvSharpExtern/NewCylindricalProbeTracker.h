@@ -51,6 +51,10 @@ CVAPI(ExceptionStatus) NewCylindricalProbeTracker_delete(NewCylindricalProbeTrac
 CVAPI(ExceptionStatus) NewCylindricalProbeTracker_setBoundPoints(NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker* self,
     NewCylindricalProbeTrackerNamespace::BoundPoints& bound);
 
+
+CVAPI(ExceptionStatus) NewCylindricalProbeTracker_setEyeGazePoints(NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker* self,
+    std::vector<float>* pVector);
+
 CVAPI(ExceptionStatus) NewCylindricalProbeTracker_update(NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker* self, cv::Mat* mat);
 
 CVAPI(void*) NewCylindricalProbeTracker_InitNearestBoundingBox();
