@@ -35,6 +35,7 @@ CVAPI(ExceptionStatus) NewCylindricalProbeTracker_new(
     , NewCylindricalProbeTrackerNamespace::TransformPoseToGlobalCoordinateCB transformPoseToGlobalCoordinateCB
     , NewCylindricalProbeTrackerNamespace::LocateAtTimestampSpatialCB locateAtTimestampSpatialCB
     , NewCylindricalProbeTrackerNamespace::SetBoundRectCB setBoundRectCB
+    , NewCylindricalProbeTrackerNamespace::SetBoundRectCB setDetectionAreaCB
     , NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker** returnValue);
 
 CVAPI(ExceptionStatus) NewCylindricalProbeTracker_onNewFrame(NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker* self);

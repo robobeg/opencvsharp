@@ -1342,6 +1342,7 @@ namespace NewCylindricalProbeTrackerNamespace
 		TransformPoseToGlobalCoordinateCB m_transformPoseToGlobalCoordinateCB;
 		LocateAtTimestampSpatialCB m_locateAtTimestampSpatialCB;
 		SetBoundRectCB m_setBoundRectCB;
+		SetBoundRectCB m_setDetectionAreaCB;
 	public:
 
 		NewCylindricalProbeTracker(const Parameter& _params
@@ -1350,7 +1351,9 @@ namespace NewCylindricalProbeTrackerNamespace
 			, GetFrameInfoNativeStructCB getFrameInfoNativeStructCB
 			, TransformPoseToGlobalCoordinateCB transformPoseToGlobalCoordinateCB
 			, LocateAtTimestampSpatialCB locateAtTimestampSpatialCB
-			, SetBoundRectCB setBoundRectCB)
+			, SetBoundRectCB setBoundRectCB
+			, SetBoundRectCB setDetectionAreaCB
+			)
 			: m_parameters__fixed(_params)
 			, m_updateResultGrayCB(updateResultGrayCB)
 			, m_getFrameInfoStampCB(getFrameInfoStampCB)
@@ -1358,6 +1361,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			, m_transformPoseToGlobalCoordinateCB(transformPoseToGlobalCoordinateCB)
 			, m_locateAtTimestampSpatialCB(locateAtTimestampSpatialCB)
 			, m_setBoundRectCB(setBoundRectCB)
+			, m_setDetectionAreaCB(setDetectionAreaCB)
 			, m_uMarkerMask__fixed(0)
 			, m_uAuxMarkerMask__fixed(0)
 			, m_uAuxPatternMarkerMask__fixed(0)
@@ -8808,6 +8812,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			orientation_ = Quaternion(0, 0, 0, 1);
 			//rotVec_ = Vector3(0, 0, 0);
 
+			
 			if (curGray_.empty() || context_.m_uExternalTrackType == 0)
 				return false;
 
@@ -8950,9 +8955,22 @@ namespace NewCylindricalProbeTrackerNamespace
 
 					int iHalfWidth = context_.m_prevImgBound.width / 2;
 					int iHalfHeight = context_.m_prevImgBound.height / 2;
-
+					int iPreviousX = x;
+					int iPreviousY = y;
 					x = centerX - iHalfWidth;
 					y = centerY - iHalfHeight;
+
+					int xDiff = iPreviousX - x;
+					int yDiff = iPreviousY - y;
+					int numaux = (int)m_parameters__fixed.auxiliaryMarkerSettings.size();
+					for (int i = 0; i < numaux; ++i)
+					{
+						OpenCVRect& auxRect = context_.m_prevAuxiliaryMarkersImgBound[i];
+						auxRect.x -= xDiff;
+						auxRect.y -= yDiff;
+					}
+					
+					
 					x_1 = centerX + iHalfWidth;
 					y_1 = centerY + iHalfHeight;
 				}
@@ -8961,6 +8979,14 @@ namespace NewCylindricalProbeTrackerNamespace
 				context_.m_prevImgBound.y = y0;
 				context_.m_prevImgBound.width = x1 - x0;
 				context_.m_prevImgBound.height = y1 - y0;
+
+				if (context_.m_prevImgBound.empty() == false)
+				{	
+					if (m_setDetectionAreaCB != nullptr)
+					{
+						(*m_setDetectionAreaCB)(context_.m_prevImgBound);
+					}					
+				}
 
 				x = std::max(0, x);
 				y = std::max(0, y);
@@ -8981,8 +9007,11 @@ namespace NewCylindricalProbeTrackerNamespace
 					rect.width = x_1 - x;
 					rect.height = y_1 - y;
 				}
+
+			
 			}
 
+		
 
 			//Mat thresh_img = new Mat(height, width, CV_8UC1);
 #ifndef USE_LIBCBDETECTOR
@@ -9842,6 +9871,20 @@ namespace NewCylindricalProbeTrackerNamespace
 								{
 									bDetectValid = false;
 									continue;
+								}
+
+								rectAll.x /= xScale;
+								rectAll.width /= xScale;
+								rectAll.y /= yScale;
+								rectAll.height/= yScale;
+
+								for (int i = 0; i < listResult.size(); ++i)
+								{
+									OpenCVRect& resultRect = listResult[i].m_rect;
+									resultRect.x /= xScale;
+									resultRect.width /= xScale;
+									resultRect.y /= yScale;
+									resultRect.height /= yScale;
 								}
 
 								bTryValid = true;
@@ -11069,9 +11112,28 @@ namespace NewCylindricalProbeTrackerNamespace
 								bDetectValid = false;
 								continue;
 							}
+							if (matCurColor_.empty() == false)
+							{
+								cv::rectangle(matCurColor_, rectAll, cv::Scalar(255, 0, 0, 255), 3);
+							}
+							rectAll.x /= xScale;
+							rectAll.width /= xScale;
+							rectAll.y /= yScale;
+							rectAll.height /= yScale;
+
+							for (int i = 0; i < listResult.size(); ++i)
+							{
+								OpenCVRect& resultRect = listResult[i].m_rect;
+								resultRect.x /= xScale;
+								resultRect.width /= xScale;
+								resultRect.y /= yScale;
+								resultRect.height /= yScale;
+							}
 
 							if (matCurColor_.empty() == false)
 							{
+								cv::rectangle(matCurColor_, rectAll, cv::Scalar(255, 0, 0, 255), 1);
+
 								if (pattern_index >= 0 && pattern_count == 1)
 								{
 									if ((uTrackType & (uint)MarkerTypeFlag_CYLINDER) != 0)
@@ -11252,6 +11314,7 @@ CVAPI(ExceptionStatus) NewCylindricalProbeTracker_new(
 	, NewCylindricalProbeTrackerNamespace::TransformPoseToGlobalCoordinateCB transformPoseToGlobalCoordinateCB
 	, NewCylindricalProbeTrackerNamespace::LocateAtTimestampSpatialCB locateAtTimestampSpatialCB
 	, NewCylindricalProbeTrackerNamespace::SetBoundRectCB setBoundRectCB
+	, NewCylindricalProbeTrackerNamespace::SetBoundRectCB setDetectionAreaCB
 	, NewCylindricalProbeTrackerNamespace::NewCylindricalProbeTracker** returnValue)
 {
 	BEGIN_WRAP
@@ -11311,6 +11374,7 @@ CVAPI(ExceptionStatus) NewCylindricalProbeTracker_new(
 		, transformPoseToGlobalCoordinateCB
 		, locateAtTimestampSpatialCB
 		, setBoundRectCB
+		, setDetectionAreaCB
 	);
 
 	END_WRAP
