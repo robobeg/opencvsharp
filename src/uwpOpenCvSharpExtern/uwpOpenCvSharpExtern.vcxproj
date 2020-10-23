@@ -393,7 +393,6 @@
     <ClInclude Include="..\OpenCvSharpExtern\photo.h" />
     <ClInclude Include="..\OpenCvSharpExtern\photo_HDR.h" />
     <ClInclude Include="..\OpenCvSharpExtern\photo_Tonemap.h" />
-    <ClInclude Include="..\OpenCvSharpExtern\polynomial_fit.h" />
     <ClInclude Include="..\OpenCvSharpExtern\quality.h" />
     <ClInclude Include="..\OpenCvSharpExtern\refine_corners.h" />
     <ClInclude Include="..\OpenCvSharpExtern\score_corners.h" />
@@ -411,7 +410,6 @@
     <ClInclude Include="..\OpenCvSharpExtern\videoio.h" />
     <ClInclude Include="..\OpenCvSharpExtern\video_background_segm.h" />
     <ClInclude Include="..\OpenCvSharpExtern\video_tracking.h" />
-    <ClInclude Include="..\OpenCvSharpExtern\weight_mask.h" />
     <ClInclude Include="..\OpenCvSharpExtern\xfeatures2d.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ximgproc.h" />
     <ClInclude Include="..\OpenCvSharpExtern\ximgproc_EdgeBoxes.h" />
@@ -453,7 +451,6 @@
     <ClCompile Include="..\OpenCvSharpExtern\objdetect.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\optflow.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\photo.cpp" />
-    <ClCompile Include="..\OpenCvSharpExtern\polynomial_fit.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\quality.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\refine_corners.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\score_corners.cpp" />
@@ -466,7 +463,6 @@
     <ClCompile Include="..\OpenCvSharpExtern\tracking.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\video.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\videoio.cpp" />
-    <ClCompile Include="..\OpenCvSharpExtern\weight_mask.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\xfeatures2d.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\ximgproc.cpp" />
     <ClCompile Include="..\OpenCvSharpExtern\xphoto.cpp" />

@@ -91,9 +91,6 @@
     <ClCompile Include="score_corners.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="weight_mask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="board_energy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -140,9 +137,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="non_maximum_suppression.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="polynomial_fit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -436,12 +430,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mark_board.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="weight_mask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="polynomial_fit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="refine_corners.h">

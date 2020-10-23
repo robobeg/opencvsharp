@@ -42,6 +42,7 @@
 #include <cmath>
 
 #include <opencv2/opencv.hpp>
+//#include <opencv2/gapi.hpp>
 
 #if CV_VERSION_MAJOR == 3 && CV_VERSION_MINOR <= 2
 #include <functional>
@@ -107,8 +108,8 @@ typedef struct Params {
   //bool show_debug_image;
   //bool show_grow_processing;
   bool refine_location;
-  bool norm;
-  bool polynomial_fit;
+  //bool norm;
+  //bool polynomial_fit;
   int norm_half_kernel_size;
   int polynomial_fit_half_kernel_size;
   float init_loc_thr;
@@ -116,17 +117,18 @@ typedef struct Params {
   bool strict_grow;
   bool overlay;
   bool occlusion;
-  DetectMethod detect_method;
+  //DetectMethod detect_method;
   //CornerType corner_type;
   std::vector<int> radius;
+  std::vector<cv::Mat> weight_mask;
 
   Params()
       //: show_processing(true)
       //, show_debug_image(false)
       //, show_grow_processing(false)
       : refine_location(true)
-      , norm(false)
-      , polynomial_fit(true)
+      //, norm(false)
+      //, polynomial_fit(true)
       , norm_half_kernel_size(31)
       , polynomial_fit_half_kernel_size(4)
       , init_loc_thr(0.01f)
@@ -134,14 +136,21 @@ typedef struct Params {
       , strict_grow(true)
       , overlay(false)
       , occlusion(true)
-      , detect_method(HessianResponse)
+      //, detect_method(HessianResponse)
       //, corner_type(SaddlePoint)
-      , radius({5, 7}) {}
+      , radius({ 5, 7 })
+      , weight_mask()
+  {
+      Prepare();
+  }
+
+  void  Prepare();
+
 } Params;
 
 typedef struct Corner {
   std::vector<cv::Point2f> p;
-  std::vector<int> r;
+  std::vector<int> rindex;
   std::vector<cv::Point2f> v1;
   std::vector<cv::Point2f> v2;
   //std::vector<cv::Point2f> v3;
@@ -156,7 +165,7 @@ typedef struct Corner {
   void reset()
   {
       p.clear();
-      r.clear();
+      rindex.clear();
       v1.clear();
       v2.clear();
       score.clear();

@@ -45,7 +45,7 @@
 
 namespace cbdetect {
 
-LIBCBDETECT_DLL_DECL void non_maximum_suppression(const cv::Mat& img, int n, float tau, int margin, Corner& corners);
+LIBCBDETECT_DLL_DECL void non_maximum_suppression(const cv::Mat& img, float tau, Corner& corners, const Params& params);
 
 LIBCBDETECT_DLL_DECL void non_maximum_suppression_sparse(Corner& corners, int n, cv::Size img_size,
                                                          const Params& params);
