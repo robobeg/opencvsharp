@@ -41,6 +41,7 @@
 #include <vector>
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/gapi.hpp>
 
 #include "config.h"
 
@@ -48,7 +49,6 @@ namespace cbdetect {
 
 LIBCBDETECT_DLL_DECL void find_corners(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_resized, Corner& corners_resized,
                                        const Params& params = Params());
-
 }
 
 #endif //CALIBRATION_FIND_CORNERS_H

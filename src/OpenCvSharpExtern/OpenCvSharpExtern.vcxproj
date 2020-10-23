@@ -355,7 +355,6 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
     <ClCompile Include="flann.cpp" />
     <ClCompile Include="optflow.cpp" />
     <ClCompile Include="photo.cpp" />
-    <ClCompile Include="polynomial_fit.cpp" />
     <ClCompile Include="quality.cpp" />
     <ClCompile Include="refine_corners.cpp" />
     <ClCompile Include="score_corners.cpp" />
@@ -369,7 +368,6 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
     <ClCompile Include="tracking.cpp" />
     <ClCompile Include="video.cpp" />
     <ClCompile Include="videoio.cpp" />
-    <ClCompile Include="weight_mask.cpp" />
     <ClCompile Include="xfeatures2d.cpp" />
     <ClCompile Include="ximgproc.cpp" />
     <ClCompile Include="xphoto.cpp" />
@@ -444,7 +442,6 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
     <ClInclude Include="ml_RTrees.h" />
     <ClInclude Include="photo_HDR.h" />
     <ClInclude Include="photo_Tonemap.h" />
-    <ClInclude Include="polynomial_fit.h" />
     <ClInclude Include="quality.h" />
     <ClInclude Include="refine_corners.h" />
     <ClInclude Include="score_corners.h" />
@@ -466,7 +463,6 @@ copy "$(SolutionDir)opencv_files\opencv450_win_x86\x86\vc16\bin\opencv_videoio_f
     <ClInclude Include="superres.h" />
     <ClInclude Include="video.h" />
     <ClInclude Include="video_background_segm.h" />
-    <ClInclude Include="weight_mask.h" />
     <ClInclude Include="xfeatures2d.h" />
     <ClInclude Include="ximgproc.h" />
     <ClInclude Include="ximgproc_EdgeBoxes.h" />

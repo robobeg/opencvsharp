@@ -43,49 +43,56 @@
 
 namespace cbdetect {
 
-void non_maximum_suppression(const cv::Mat& img, int n, float tau, int margin, Corner& corners) {
-  cv::Mat choose_img = cv::Mat::zeros(img.size(), CV_8U);
-  cv::parallel_for_(cv::Range(1, (int) std::floorf((img.rows - 2 * margin) / (n + 1)) + 1), [&](const cv::Range& range) -> void {
-    for(int j = range.start * (n + 1) + margin - 1; j < range.end * (n + 1) + margin - 1; j += n + 1) {
-      for(int i = n + margin; i < img.cols - n - margin; i += n + 1) {
-        int maxi = i, maxj = j;
-        float maxval = img.at<float>(j, i);
+void non_maximum_suppression(const cv::Mat& img, float tau, Corner& corners, const Params& params) 
+{
+    int margin, n;
+    for (int rindex = 0; rindex < (int)params.radius.size(); rindex++)
+    {
+        margin = n = params.radius[rindex];
 
-        for(int j2 = j; j2 <= j + n; ++j2) {
-          for(int i2 = i; i2 <= i + n; ++i2) {
-            if(img.at<float>(j2, i2) > maxval) {
-              maxi   = i2;
-              maxj   = j2;
-              maxval = img.at<float>(j2, i2);
+        cv::Mat choose_img = cv::Mat::zeros(img.size(), CV_8U);
+        cv::parallel_for_(cv::Range(1, (int)std::floorf((img.rows - 2 * margin) / (n + 1)) + 1), [&](const cv::Range& range) -> void {
+            for (int j = range.start * (n + 1) + margin - 1; j < range.end * (n + 1) + margin - 1; j += n + 1) {
+                for (int i = n + margin; i < img.cols - n - margin; i += n + 1) {
+                    int maxi = i, maxj = j;
+                    float maxval = img.at<float>(j, i);
+
+                    for (int j2 = j; j2 <= j + n; ++j2) {
+                        for (int i2 = i; i2 <= i + n; ++i2) {
+                            if (img.at<float>(j2, i2) > maxval) {
+                                maxi = i2;
+                                maxj = j2;
+                                maxval = img.at<float>(j2, i2);
+                            }
+                        }
+                    }
+
+                    // maximum
+                    for (int j2 = maxj - n; j2 <= std::min(maxj + n, img.rows - 1 - margin); ++j2) {
+                        for (int i2 = maxi - n; i2 <= std::min(maxi + n, img.cols - 1 - margin); ++i2) {
+                            if (img.at<float>(j2, i2) > maxval) {
+                                goto GOTO_FAILED;
+                            }
+                        }
+                    }
+
+                    if (maxval > tau) {
+                        choose_img.at<uint8_t>(maxj, maxi) = 1;
+                    }
+                GOTO_FAILED:;
+                }
             }
-          }
-        }
+        });
 
-        // maximum
-        for(int j2 = maxj - n; j2 <= std::min(maxj + n, img.rows - 1 - margin); ++j2) {
-          for(int i2 = maxi - n; i2 <= std::min(maxi + n, img.cols - 1 - margin); ++i2) {
-            if(img.at<float>(j2, i2) > maxval) {
-              goto GOTO_FAILED;
+        for (int j = margin; j < img.rows - margin; ++j) {
+            for (int i = margin; i < img.cols - margin; ++i) {
+                if (choose_img.at<uint8_t>(j, i) == 1) {
+                    corners.p.emplace_back(cv::Point2f(i, j));
+                    corners.rindex.emplace_back(rindex);
+                }
             }
-          }
         }
-
-        if(maxval > tau) {
-          choose_img.at<uint8_t>(maxj, maxi) = 1;
-        }
-      GOTO_FAILED:;
-      }
     }
-  });
-
-  for(int j = margin; j < img.rows - margin; ++j) {
-    for(int i = margin; i < img.cols - margin; ++i) {
-      if(choose_img.at<uint8_t>(j, i) == 1) {
-        corners.p.emplace_back(cv::Point2f(i, j));
-        corners.r.emplace_back(margin);
-      }
-    }
-  }
 }
 
 void non_maximum_suppression_sparse(Corner& corners, int n, cv::Size img_size, const Params& params) {
@@ -101,7 +108,7 @@ void non_maximum_suppression_sparse(Corner& corners, int n, cv::Size img_size, c
   }
   std::vector<cv::Point2f> corners_out_p, corners_out_v1, corners_out_v2;// , corners_out_v3;
   std::vector<float> corners_out_score;
-  std::vector<int> corners_out_r;
+  std::vector<int> corners_out_rindex;
   //bool is_monkey_saddle = params.corner_type == MonkeySaddlePoint;
   for(int i = 0; i < corners.p.size(); ++i) {
     int u        = std::round(corners.p[i].x);
@@ -121,7 +128,7 @@ void non_maximum_suppression_sparse(Corner& corners, int n, cv::Size img_size, c
       }
     }
     corners_out_p.emplace_back(corners.p[i]);
-    corners_out_r.emplace_back(corners.r[i]);
+    corners_out_rindex.emplace_back(corners.rindex[i]);
     corners_out_v1.emplace_back(corners.v1[i]);
     corners_out_v2.emplace_back(corners.v2[i]);
     //if(is_monkey_saddle) {
@@ -131,7 +138,7 @@ void non_maximum_suppression_sparse(Corner& corners, int n, cv::Size img_size, c
   GOTO_FAILED:;
   }
   corners.p  = std::move(corners_out_p);
-  corners.r  = std::move(corners_out_r);
+  corners.rindex  = std::move(corners_out_rindex);
   corners.v1 = std::move(corners_out_v1);
   corners.v2 = std::move(corners_out_v2);
   //if(is_monkey_saddle) {

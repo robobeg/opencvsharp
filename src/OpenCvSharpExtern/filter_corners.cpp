@@ -47,7 +47,7 @@
 #include "filter_corners.h"
 #include "find_corners.h"
 #include "find_modes_meanshift.h"
-#include "weight_mask.h"
+//#include "weight_mask.h"
 
 namespace cbdetect {
 
@@ -69,21 +69,22 @@ void filter_corners(const cv::Mat& img, const cv::Mat& img_angle, const cv::Mat&
  // }
   int width = img.cols, height = img.rows;
   std::vector<cv::Point2f> corners_out_p;
-  std::vector<int> corners_out_r;
+  std::vector<int> corners_out_rindex;
   std::vector<int> choose(corners.p.size(), 0);
   std::vector<float> cos_v(n_cicle), sin_v(n_cicle);
   for(int i = 0; i < n_cicle; ++i) {
     cos_v[i] = std::cosf(i * 2.0f * M_PI / (n_cicle - 1));
     sin_v[i] = std::sinf(i * 2.0f * M_PI / (n_cicle - 1));
   }
-  auto mask = weight_mask(params.radius);
+  //auto mask = weight_mask(params.radius);
 
   cv::parallel_for_(cv::Range(0, corners.p.size()), [&](const cv::Range& range) -> void {
     for(int i = range.start; i < range.end; ++i) {
       int num_crossings = 0, num_modes = 0;
       int center_u = std::round(corners.p[i].x);
       int center_v = std::round(corners.p[i].y);
-      int r        = corners.r[i];
+      int rindex = corners.rindex[i];
+      int r        = params.radius[rindex];
       if(center_u - r < 0 || center_u + r >= width - 1 || center_v - r < 0 || center_v + r >= height - 1) {
         continue;
       }
@@ -126,7 +127,7 @@ void filter_corners(const cv::Mat& img, const cv::Mat& img_angle, const cv::Mat&
       int bottom_right_v     = std::min(center_v + r, height - 1);
       cv::Mat img_weight_sub = cv::Mat::zeros(2 * r + 1, 2 * r + 1, CV_32F);
       img_weight.rowRange(top_left_v, bottom_right_v + 1).colRange(top_left_u, bottom_right_u + 1).copyTo(img_weight_sub(cv::Range(top_left_v - center_v + r, bottom_right_v - center_v + r + 1), cv::Range(top_left_u - center_u + r, bottom_right_u - center_u + r + 1)));
-      img_weight_sub    = img_weight_sub.mul(mask[r]);
+      img_weight_sub    = img_weight_sub.mul(params.weight_mask[rindex]);
       double dtmp_maxval = 0;
       cv::minMaxLoc(img_weight_sub, NULL, &dtmp_maxval);
       float tmp_maxval = (float)dtmp_maxval;
@@ -159,11 +160,11 @@ void filter_corners(const cv::Mat& img, const cv::Mat& img_angle, const cv::Mat&
   for(int i = 0; i < corners.p.size(); ++i) {
     if(choose[i] == 1) {
       corners_out_p.emplace_back(cv::Point2f(corners.p[i].x, corners.p[i].y));
-      corners_out_r.emplace_back(corners.r[i]);
+      corners_out_rindex.emplace_back(corners.rindex[i]);
     }
   }
   corners.p = std::move(corners_out_p);
-  corners.r = std::move(corners_out_r);
+  corners.rindex = std::move(corners_out_rindex);
 }
 
 } // namespace cbdetect

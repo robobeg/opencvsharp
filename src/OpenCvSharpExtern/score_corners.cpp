@@ -43,7 +43,7 @@
 #include "create_correlation_patch.h"
 #include "find_corners.h"
 #include "get_image_patch.h"
-#include "weight_mask.h"
+//#include "weight_mask.h"
 
 namespace cbdetect {
 
@@ -161,7 +161,7 @@ float corner_correlation_score(const cv::Mat& img, const cv::Mat& img_weight,
 void sorce_corners(const cv::Mat& img, const cv::Mat& img_weight, Corner& corners, const Params& params) {
   corners.score.resize(corners.p.size());
   int width = img.cols, height = img.rows;
-  auto mask = weight_mask(params.radius);
+  //auto mask = weight_mask(params.radius);
 
   // for all corners do
   cv::parallel_for_(cv::Range(0, corners.p.size()), [&](const cv::Range& range) -> void {
@@ -169,7 +169,8 @@ void sorce_corners(const cv::Mat& img, const cv::Mat& img_weight, Corner& corner
       // corner location
       float u = corners.p[i].x;
       float v = corners.p[i].y;
-      int r    = corners.r[i];
+      int rindex = corners.rindex[i];
+      int r    = params.radius[rindex];
       int iu = (int)std::floor(u);
       int iv = (int)std::floor(v);
 
@@ -180,7 +181,7 @@ void sorce_corners(const cv::Mat& img, const cv::Mat& img_weight, Corner& corner
       cv::Mat img_sub, img_weight_sub;
       get_image_patch(img, iu, iv, u-iu, v-iv, r, img_sub);
       get_image_patch(img_weight, iu, iv, u-iu, v-iv, r, img_weight_sub);
-      img_weight_sub = img_weight_sub.mul(mask[r]);
+      img_weight_sub = img_weight_sub.mul(params.weight_mask[rindex]);
       //if(params.corner_type == SaddlePoint) {
         corners.score[i] = corner_correlation_score(img_sub, img_weight_sub, corners.v1[i], corners.v2[i]);
       //} else if(params.corner_type == MonkeySaddlePoint) {
@@ -194,12 +195,12 @@ void sorce_corners(const cv::Mat& img, const cv::Mat& img_weight, Corner& corner
 void remove_low_scoring_corners(float tau, Corner& corners, const Params& params) {
     std::vector<cv::Point2f> corners_out_p, corners_out_v1, corners_out_v2;// , corners_out_v3;
   std::vector<float> corners_out_score;
-  std::vector<int> corners_out_r;
+  std::vector<int> corners_out_rindex;
   //bool is_monkey_saddle = params.corner_type == MonkeySaddlePoint;
   for(int i = 0; i < corners.p.size(); ++i) {
     if(corners.score[i] > tau) {
       corners_out_p.emplace_back(corners.p[i]);
-      corners_out_r.emplace_back(corners.r[i]);
+      corners_out_rindex.emplace_back(corners.rindex[i]);
       corners_out_v1.emplace_back(corners.v1[i]);
       corners_out_v2.emplace_back(corners.v2[i]);
       //if(is_monkey_saddle) {
@@ -209,7 +210,7 @@ void remove_low_scoring_corners(float tau, Corner& corners, const Params& params
     }
   }
   corners.p  = std::move(corners_out_p);
-  corners.r  = std::move(corners_out_r);
+  corners.rindex  = std::move(corners_out_rindex);
   corners.v1 = std::move(corners_out_v1);
   corners.v2 = std::move(corners_out_v2);
   //if(is_monkey_saddle) {

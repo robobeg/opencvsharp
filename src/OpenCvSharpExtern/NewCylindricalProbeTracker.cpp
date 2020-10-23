@@ -1952,11 +1952,11 @@ namespace NewCylindricalProbeTrackerNamespace
 
 			//m_cbdetectParams__fixed.show_debug_image = false;
 			//m_cbdetectParams__fixed.show_grow_processing = false;
-			m_cbdetectParams__fixed.polynomial_fit = false;
+			//m_cbdetectParams__fixed.polynomial_fit = false;
 			m_cbdetectParams__fixed.refine_location = true;
-			m_cbdetectParams__fixed.detect_method = cbdetect::HessianResponse;
+			//m_cbdetectParams__fixed.detect_method = cbdetect::HessianResponse;
 
-
+			m_cbdetectParams__fixed.Prepare();
 		}
 
 		virtual ~NewCylindricalProbeTracker()
@@ -3925,7 +3925,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				CvCBCorner& ocorner = ocorners[i];
 				ocorner.pt = cv::Point2d(icorners.p[i].x + rect.x, icorners.p[i].y + rect.y);
 				ocorner.mark = 0;
-				ocorner.imageError = icorners.r[i];
+				ocorner.imageError = m_cbdetectParams__fixed.radius[icorners.rindex[i]];
 			}
 			CvCBCorner& cdummy = ocorners.back();
 			cdummy.pt = Point2(FLT_MAX, FLT_MAX);
@@ -8908,6 +8908,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				}
 			}
 
+			/*
 			if (context_.m_prevImgBound.empty() == false)
 			{
 				int x0 = context_.m_prevImgBound.x;
@@ -9010,6 +9011,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 			
 			}
+			*/
 
 		
 

@@ -33,7 +33,7 @@
 #include "image_normalization_and_gradients.h"
 #include "non_maximum_suppression.h"
 //#include "plot_corners.h"
-#include "polynomial_fit.h"
+//#include "polynomial_fit.h"
 #include "refine_corners.h"
 #include "score_corners.h"
 
@@ -119,7 +119,7 @@ void find_corners_resized(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_
     }
     if(min_dist > min_dist_thr) {
       corners.p.emplace_back(corners_resized.p[i]);
-      corners.r.emplace_back(corners_resized.r[i]);
+      corners.rindex.emplace_back(corners_resized.rindex[i]);
       corners.v1.emplace_back(corners_resized.v1[i]);
       corners.v2.emplace_back(corners_resized.v2[i]);
       //if(params.corner_type == MonkeySaddlePoint) {
@@ -189,15 +189,15 @@ void find_corners(cv::Mat& img_gray, Corner& corners, cv::Mat& img_gray_resized,
   //}
 
   // polynomial fit
-  if(params.polynomial_fit) {
-    polynomial_fit(img_norm, corners, params);
-    //if(params.show_processing) {
-    //  printf("Polyfitting corners (%d x %d) ... %lu\n", img_norm.cols, img_norm.rows, corners.p.size());
-    //}
-    //if(params.show_debug_image) {
-    //  plot_corners(img_gray, corners.p, "polynomial fit corners");
-    //}
-  }
+  //if(params.polynomial_fit) {
+  //  polynomial_fit(img_norm, corners, params);
+  //  //if(params.show_processing) {
+  //  //  printf("Polyfitting corners (%d x %d) ... %lu\n", img_norm.cols, img_norm.rows, corners.p.size());
+  //  //}
+  //  //if(params.show_debug_image) {
+  //  //  plot_corners(img_gray, corners.p, "polynomial fit corners");
+  //  //}
+  //}
 
   // score corners
   sorce_corners(img_norm, img_weight, corners, params);

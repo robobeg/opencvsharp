@@ -48,9 +48,23 @@
 
 namespace cbdetect {
 
+/*
+
+G_TYPED_KERNEL(GScalarMin, <cv::GScalar(cv::GMat)>, "cbdetect.scalarmin")
+{
+    static cv::GScalarDesc outMeta(cv::GMatDesc) {
+        return cv::empty_scalar_desc();
+    }
+};
+*/
+
 void get_init_location(const cv::Mat& img, const cv::Mat& img_du, const cv::Mat& img_dv,
                        Corner& corners, const Params& parmas);
 
+/*
+void gapi_get_init_location(const cv::GMat& img, const cv::GMat& img_du, const cv::GMat& img_dv,
+    cv::GArray<cv::Point2f>& p, cv::GArray<int>& r, const Params& params);
+*/
 }
 
 #endif //LIBCBDETECT_GET_INIT_LOCATION_H

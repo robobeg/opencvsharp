@@ -29,11 +29,15 @@
 
 namespace cbdetect {
 
-LIBCBDETECT_DLL_DECL void box_filter(const cv::Mat& img, cv::Mat& blur_img, int kernel_size_x, int kernel_size_y = -1);
+//LIBCBDETECT_DLL_DECL void box_filter(const cv::Mat& img, cv::Mat& blur_img, int kernel_size_x, int kernel_size_y = -1);
 
 LIBCBDETECT_DLL_DECL void image_normalization_and_gradients(cv::Mat& img, cv::Mat& img_du, cv::Mat& img_dv,
                                                             cv::Mat& img_angle, cv::Mat& img_weight,
                                                             const Params& params);
+/*
+LIBCBDETECT_DLL_DECL void gapi_image_normalization_and_gradients(const cv::GMat& imgIn, cv::GMat& imgOut
+    , cv::GMat& img_du, cv::GMat& img_dv, cv::GMat& img_angle, cv::GMat& img_weight, const Params& params);
+*/
 
 } // namespace cbdetect
 

@@ -1,7 +1,29 @@
 #include "config.h"
-
+//#include "weight_mask.h"
 
 namespace cbdetect {
+
+
+	void  Params::Prepare()
+	{
+		weight_mask.clear();
+		weight_mask.resize(radius.size());
+		for (int i = 0; i < (int)radius.size(); i++)
+		{
+			int r = radius[i];
+			weight_mask[i] = cv::Mat::zeros(r * 2 + 1, r * 2 + 1, CV_32F);
+			cv::Mat& mat = weight_mask[i];
+			for (int v = 0; v < r * 2 + 1; ++v) 
+			{
+				for (int u = 0; u < r * 2 + 1; ++u)
+				{
+					float dist = std::sqrtf((u - r) * (u - r) + (v - r) * (v - r)) / r;
+					dist = std::min(std::max(dist, 0.7f), 1.3f);
+					mat.at<float>(v, u) = (1.3f - dist) / 0.6f;
+				}
+			}
+		}
+	}
 
 
 	void Board::set_size(int rows, int cols)
