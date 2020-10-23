@@ -8908,7 +8908,6 @@ namespace NewCylindricalProbeTrackerNamespace
 				}
 			}
 
-			/*
 			if (context_.m_prevImgBound.empty() == false)
 			{
 				int x0 = context_.m_prevImgBound.x;
@@ -9008,12 +9007,8 @@ namespace NewCylindricalProbeTrackerNamespace
 					rect.width = x_1 - x;
 					rect.height = y_1 - y;
 				}
-
 			
 			}
-			*/
-
-		
 
 			//Mat thresh_img = new Mat(height, width, CV_8UC1);
 #ifndef USE_LIBCBDETECTOR
