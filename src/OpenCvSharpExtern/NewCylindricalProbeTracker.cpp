@@ -952,11 +952,11 @@ namespace NewCylindricalProbeTrackerNamespace
 			int colNopArray;
 
 			BitInfo()
-				: 
-#ifndef USE_LIBCBDETECTOR				
+				:
+#ifndef USE_LIBCBDETECTOR
 				quads()
 				, bitCount(0),
-#endif USE_LIBCBDETECTOR				
+#endif USE_LIBCBDETECTOR
 				rowArray(0)
 				, colArray(0)
 				, rowNopArray(0)
@@ -1032,9 +1032,9 @@ namespace NewCylindricalProbeTrackerNamespace
 			uint		m_uExternalTrackType;
 
 			std::vector<MarkerRuntime>
-							m_cylinderMarkerRuntimes;
+				m_cylinderMarkerRuntimes;
 			std::vector<std::vector<MarkerRuntime>>
-							m_auxliaryMarkerRuntimes;
+				m_auxliaryMarkerRuntimes;
 
 			//List<MarkerRuntime>
 			//					m_topProbeMarkerRuntimes;
@@ -1353,7 +1353,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			, LocateAtTimestampSpatialCB locateAtTimestampSpatialCB
 			, SetBoundRectCB setBoundRectCB
 			, SetBoundRectCB setDetectionAreaCB
-			)
+		)
 			: m_parameters__fixed(_params)
 			, m_updateResultGrayCB(updateResultGrayCB)
 			, m_getFrameInfoStampCB(getFrameInfoStampCB)
@@ -2247,7 +2247,7 @@ namespace NewCylindricalProbeTrackerNamespace
 								m_info__track.m_pMatCamera->copyTo(m_context__detect.m_matCamera);
 								m_info__track.m_pMatImageGray->copyTo(m_context__detect.m_prevGray);
 								m_info__track.m_pMatImageOriginal->copyTo(m_context__detect.m_prevOriginal);
-								
+
 								pPrevDetectSpacialCoordinateSystem = m_context__detect.m_pPrevSpatialCoordinateSystem;
 								m_context__detect.m_pPrevSpatialCoordinateSystem = m_info__track.m_pSpatialCoordinateSystem;
 								if (m_context__detect.m_pPrevSpatialCoordinateSystem != nullptr)
@@ -2428,7 +2428,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				delete m_info__track.m_pMatImageGray;
 				m_info__track.m_pMatImageGray = nullptr;
 			}
-			if ( m_info__track.m_pMatImageOriginal)
+			if (m_info__track.m_pMatImageOriginal)
 			{
 				delete m_info__track.m_pMatImageOriginal;
 				m_info__track.m_pMatImageOriginal = nullptr;
@@ -2542,7 +2542,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				}
 				m_iEyeGazePointsStamp__mutex = iStamp;
 			}
-			
+
 
 		}
 		static float estimateFittingCircle(float x1, float y1, float x2, float y2, float x3, float y3
@@ -2560,10 +2560,10 @@ namespace NewCylindricalProbeTrackerNamespace
 			float x31 = x3 - x1;
 			float x21 = x2 - x1;
 
-			// x1^2 - x3^2 
+			// x1^2 - x3^2
 			float sx13 = x1 * x1 - x3 * x3;
 
-			// y1^2 - y3^2 
+			// y1^2 - y3^2
 			float sy13 = y1 * y1 - y3 * y3;
 
 			float sx21 = x2 * x2 - x1 * x1;
@@ -2582,14 +2582,14 @@ namespace NewCylindricalProbeTrackerNamespace
 
 			float c = -x1 * x1 - y1 * y1 - 2 * g * x1 - 2 * f * y1;
 
-			// eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0 
-			// where centre is (h = -g, k = -f) and radius r 
-			// as r^2 = h^2 + k^2 - c 
+			// eqn of circle be x^2 + y^2 + 2*g*x + 2*f*y + c = 0
+			// where centre is (h = -g, k = -f) and radius r
+			// as r^2 = h^2 + k^2 - c
 			float h = -g;
 			float k = -f;
 			float sqr_of_r = h * h + k * k - c;
 
-			// r is the radius 
+			// r is the radius
 			cx = h;
 			cy = k;
 			return std::sqrt(sqr_of_r);
@@ -3916,10 +3916,10 @@ namespace NewCylindricalProbeTrackerNamespace
 
 #ifdef USE_LIBCBDETECTOR
 
-		void convertCorners(const cbdetect::Corner& icorners, std::vector<CvCBCorner>& ocorners, OpenCVRect rect )
+		void convertCorners(const cbdetect::Corner& icorners, std::vector<CvCBCorner>& ocorners, OpenCVRect rect)
 		{
 			int iNumCorners = icorners.p.size();
-			ocorners.resize(iNumCorners+1);
+			ocorners.resize(iNumCorners + 1);
 			for (int i = 0; i < iNumCorners; i++)
 			{
 				CvCBCorner& ocorner = ocorners[i];
@@ -4230,7 +4230,7 @@ namespace NewCylindricalProbeTrackerNamespace
 		{
 
 			// Thresh dilation is used to counter the effect of dilation on the
-			// distance between 2 neighboring corners. Since the distance below is 
+			// distance between 2 neighboring corners. Since the distance below is
 			// computed as its square, we do here the same. Additionally, we take the
 			// conservative assumption that dilation was performed using the 3x3 CROSS
 			// kernel, which coresponds to the 4-neighborhood.
@@ -4301,9 +4301,9 @@ namespace NewCylindricalProbeTrackerNamespace
 								float y4 = (cur_quad.corners[(i + 1) % 4]->pt.y + cur_quad.corners[(i + 2) % 4]->pt.y) / 2;
 
 								// MARTIN: Heuristic
-								// For the corner "j" of quad "k" to be considered, 
-								// it needs to be on the same side of the two lines as 
-								// corner "i". This is given, if the cross product has 
+								// For the corner "j" of quad "k" to be considered,
+								// it needs to be on the same side of the two lines as
+								// corner "i". This is given, if the cross product has
 								// the same sign for both computations below:
 								float a1 = x1 - x2;
 								float b1 = y1 - y2;
@@ -4354,8 +4354,8 @@ namespace NewCylindricalProbeTrackerNamespace
 								float v4 = (quad_k.corners[(j + 1) % 4]->pt.y + quad_k.corners[(j + 2) % 4]->pt.y) / 2;
 
 								// MARTIN: Heuristic
-								// for the corner "j" of quad "k" to be considered, it 
-								// needs to be on the same side of the two lines as 
+								// for the corner "j" of quad "k" to be considered, it
+								// needs to be on the same side of the two lines as
 								// corner "i". This is again given, if the cross
 								//product has the same sign for both computations below:
 								float a3 = u1 - u2;
@@ -4503,7 +4503,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				{
 					CvCBQuad* neighbor = q->neighbors[j];
 
-					// If he neighbor exists and the neighbor has more than 0 
+					// If he neighbor exists and the neighbor has more than 0
 					// neighbors and the neighbor has not been classified yet.
 					if (neighbor != nullptr && neighbor->count > 0 && neighbor->group_idx == -1)
 					{
@@ -5088,7 +5088,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			bool bIMajor = bMajor;
 			uint code = 0;
 			uint reverse_code = 0;
-			
+
 			int i = 0;
 			int iLabelIndex = 0;
 			float min_width_sqr = 0.f;
@@ -5513,10 +5513,10 @@ namespace NewCylindricalProbeTrackerNamespace
 					}
 					else
 					{
-						min_width_sqr = std::min(min_width_sqr,quad->min_width_sqr);
-						max_width_sqr = std::max(max_width_sqr,quad->max_width_sqr);
-						min_height_sqr = std::min(min_height_sqr,quad->min_height_sqr);
-						max_height_sqr = std::max(max_height_sqr,quad->max_height_sqr);
+						min_width_sqr = std::min(min_width_sqr, quad->min_width_sqr);
+						max_width_sqr = std::max(max_width_sqr, quad->max_width_sqr);
+						min_height_sqr = std::min(min_height_sqr, quad->min_height_sqr);
+						max_height_sqr = std::max(max_height_sqr, quad->max_height_sqr);
 
 
 					}
@@ -5876,7 +5876,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 		void labelQuadGroup2__detect(WorkContext& context_, CvCBQuad* quad_group, int rows, int cols, cbdetect::BoardType eBoardType, std::vector<SinglePattern*>& foundPattern, uint uMarkerFlag)
 		{
-			if (rows <= 0 || cols <= 0 || eBoardType == cbdetect::BoardTypeInvalid || quad_group == nullptr )
+			if (rows <= 0 || cols <= 0 || eBoardType == cbdetect::BoardTypeInvalid || quad_group == nullptr)
 				return;
 
 			// CYLINDER, CHECKER 인식
@@ -5998,7 +5998,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			if (uCylinderCheckerFlag != 0)
 			{
 				int iMarkerCodeLength = m_parameters__fixed.markerCodeLength;
-				
+
 				std::vector<CvCBQuad*>& vecQuadTemp = m_findConnectedQuad__detect;
 				std::vector<SinglePattern*>& rowPatterns = m_rowPatternsRuntime__detect;
 				std::vector<SinglePattern*>& reverseRowPatterns = m_reverseRowPatternsRuntime__detect;
@@ -6176,9 +6176,9 @@ namespace NewCylindricalProbeTrackerNamespace
 								// Only proceed, if neighbor "j" was labeled
 								if (quadNeighborJ->labeled == true)
 								{
-									// For every quad it could happen to pass here 
+									// For every quad it could happen to pass here
 									// multiple times. We therefore "break" later.
-									// Check whitch of the neighbors corners is 
+									// Check whitch of the neighbors corners is
 									// connected to the current quad
 									int connectedNeighborCornerId = -1;
 									int k = 0;
@@ -6199,9 +6199,9 @@ namespace NewCylindricalProbeTrackerNamespace
 										continue;
 									}
 
-									// For the following calculations we need the row 
-									// and column of the connected neighbor corner and 
-									// all other corners of the connected quad "j", 
+									// For the following calculations we need the row
+									// and column of the connected neighbor corner and
+									// all other corners of the connected quad "j",
 									// clockwise (CW)
 									CvCBCorner* conCorner = quadNeighborJ->corners[connectedNeighborCornerId];
 									CvCBCorner* conCornerCW1 = quadNeighborJ->corners[(connectedNeighborCornerId + 1) % 4];
@@ -6938,7 +6938,7 @@ namespace NewCylindricalProbeTrackerNamespace
 		void update2Dcollect3DPoints(int iMarkerCodeLength, SinglePattern* pattern, std::vector<Point3>& points3d, const std::vector<MarkerInfo>& markerInfos, std::vector<MarkerRuntime>& markerRuntimes)
 		{
 			//if (pattern->pattern_count <= 0)
-			//	return false;	
+			//	return false;
 			int iPatternNums = (int)markerInfos.size();
 
 			int iOffset_0 = (int)pattern->direction;
@@ -6946,7 +6946,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			int iOffset_2 = (iOffset_0 + 2) % 4;
 			int iOffset_3 = (iOffset_0 + 3) % 4;
 
-		
+
 			int iBlockOffset = 0;
 			int err = 0;
 			Point2 cp;
@@ -6959,11 +6959,11 @@ namespace NewCylindricalProbeTrackerNamespace
 			for (int c = 0; c < iMarkerCodeLength; c++)
 			{
 				copyPoint(pattern->block_quads[c]->corners[iOffset_3], cp, err);
-				markerRuntimes[pattern_index].m_tmpImgPoints[c+1] = cp;
-				markerRuntimes[pattern_index].m_tmpImgPointsErr[c+1] = err;
+				markerRuntimes[pattern_index].m_tmpImgPoints[c + 1] = cp;
+				markerRuntimes[pattern_index].m_tmpImgPointsErr[c + 1] = err;
 			}
 
-			for (int p = 0; p <= pattern->pattern_count; p++, iBlockOffset += iMarkerCodeLength )
+			for (int p = 0; p <= pattern->pattern_count; p++, iBlockOffset += iMarkerCodeLength)
 			{
 				pattern_index = (pattern_index + 1) % iPatternNums;
 				points3d.insert(points3d.end(), markerInfos[pattern_index].m_corner3DPoints.begin(), markerInfos[pattern_index].m_corner3DPoints.end());
@@ -6972,9 +6972,9 @@ namespace NewCylindricalProbeTrackerNamespace
 				markerRuntimes[pattern_index].m_tmpImgPointsErr[0] = err;
 				for (int c = 0; c < iMarkerCodeLength; c++)
 				{
-					copyPoint(pattern->block_quads[iBlockOffset+c]->corners[iOffset_2], cp, err);
-					markerRuntimes[pattern_index].m_tmpImgPoints[c+1] = cp;
-					markerRuntimes[pattern_index].m_tmpImgPointsErr[c+1] = err;
+					copyPoint(pattern->block_quads[iBlockOffset + c]->corners[iOffset_2], cp, err);
+					markerRuntimes[pattern_index].m_tmpImgPoints[c + 1] = cp;
+					markerRuntimes[pattern_index].m_tmpImgPointsErr[c + 1] = err;
 				}
 			}
 
@@ -6990,10 +6990,10 @@ namespace NewCylindricalProbeTrackerNamespace
 			int pattern_index = (pattern->pattern_index + iPatternNums - 1) % iPatternNums;
 			int iBlockOffset = 0;
 
-			for( int p = -1; p <= pattern->pattern_count; p++ )
+			for (int p = -1; p <= pattern->pattern_count; p++)
 			{
 				pointsImg.insert(pointsImg.end(), markerRuntimes[pattern_index].m_tmpImgPoints.begin(), markerRuntimes[pattern_index].m_tmpImgPoints.end());
-				pattern_index = (pattern_index + 1 ) % iPatternNums;
+				pattern_index = (pattern_index + 1) % iPatternNums;
 			}
 		}
 
@@ -7003,7 +7003,7 @@ namespace NewCylindricalProbeTrackerNamespace
 		void update2Dcollect3DPoints(int iMarkerCodeLength, SinglePattern* pattern, std::vector<Point3>& points3d, const std::vector<MarkerInfo>& markerInfos, std::vector<MarkerRuntime>& markerRuntimes)
 		{
 			//if (pattern->pattern_count <= 0)
-			//	return false;	
+			//	return false;
 			int iPatternNums = (int)markerInfos.size();
 			//if (pattern->pattern_index < 0 || pattern->pattern_index >= iPatternNums)
 			//	return false;
@@ -7273,7 +7273,7 @@ namespace NewCylindricalProbeTrackerNamespace
 		void collect2DPoints(int iMarkerCodeLength, SinglePattern* pattern, std::vector<Point2>& pointsImg, const std::vector<MarkerInfo>& markerInfos, std::vector<MarkerRuntime>& markerRuntimes)
 		{
 			//if (pattern->pattern_count <= 0)
-			//	return false;	
+			//	return false;
 			int iPatternNums = (int)markerInfos.size();
 			//if (pattern->pattern_index < 0 || pattern->pattern_index >= iPatternNums)
 			//	return false;
@@ -7436,7 +7436,7 @@ namespace NewCylindricalProbeTrackerNamespace
 						listCorners.push_back(markerRuntime[index].m_tmpImgPoints[c]);
 					}
 				}
-				
+
 				for (int iCornerIndex = 0; iCornerIndex < listCorners.size(); ++iCornerIndex)
 				{
 					listCorners[iCornerIndex].x *= xScale;
@@ -7468,7 +7468,7 @@ namespace NewCylindricalProbeTrackerNamespace
 #ifdef USE_LIBCBDETECTOR
 
 		void refinePlaneCorners(int iXWidth, cv::Mat& matGray, const std::vector<MarkerInfo>& markerInfo, std::vector<MarkerRuntime>& markerRuntime
-			, std::vector<int>& listCornerCounter, std::vector<Point2>& listCorners, double xScale = 1.0, double yScale = 1.0 )
+			, std::vector<int>& listCornerCounter, std::vector<Point2>& listCorners, double xScale = 1.0, double yScale = 1.0)
 		{
 			if (markerRuntime.size() != markerInfo.size())
 				return;
@@ -7511,7 +7511,7 @@ namespace NewCylindricalProbeTrackerNamespace
 						}
 					}
 				}
-				
+
 				for (int iCornerIndex = 0; iCornerIndex < listCorners.size(); ++iCornerIndex)
 				{
 					listCorners[iCornerIndex].x *= xScale;
@@ -8621,7 +8621,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			}
 
 
-			bool bDetectValid = (uTrackType & (unsigned) MarkerTypeFlag_CYLINDER) != 0;
+			bool bDetectValid = (uTrackType & (unsigned)MarkerTypeFlag_CYLINDER) != 0;
 			//(uTrackType& m_uMarkerMask__fixed) != 0;
 			//MarkerTypeFlag_CYLINDER
 
@@ -8812,7 +8812,7 @@ namespace NewCylindricalProbeTrackerNamespace
 			orientation_ = Quaternion(0, 0, 0, 1);
 			//rotVec_ = Vector3(0, 0, 0);
 
-			
+
 			if (curGray_.empty() || context_.m_uExternalTrackType == 0)
 				return false;
 
@@ -8846,8 +8846,8 @@ namespace NewCylindricalProbeTrackerNamespace
 				BoundPoints boundPoints;
 
 				int iNewBoundStamp = m_iBoundPointsStamp__mutex;
-				if ( iNewBoundStamp != m_iBoundPointStamp__detect
-					&& m_mutexNewBoundPoints__mutex.try_lock() == true )
+				if (iNewBoundStamp != m_iBoundPointStamp__detect
+					&& m_mutexNewBoundPoints__mutex.try_lock() == true)
 				{
 					boundPoints = m_newBoundPoints__mutex;
 					m_iBoundPointStamp__detect = m_iBoundPointsStamp__mutex;
@@ -8894,8 +8894,8 @@ namespace NewCylindricalProbeTrackerNamespace
 
 							context_.m_prevImgBound.x = (int)p2Min.x - m_parameters__fixed.expandAreaMargin;
 							context_.m_prevImgBound.y = (int)p2Min.y - m_parameters__fixed.expandAreaMargin;
-							context_.m_prevImgBound.width = (int)(p2Max.x + m_parameters__fixed.expandAreaMargin  - context_.m_prevImgBound.x + 1);
-							context_.m_prevImgBound.height = (int)(p2Max.y + m_parameters__fixed.expandAreaMargin  - context_.m_prevImgBound.y + 1);
+							context_.m_prevImgBound.width = (int)(p2Max.x + m_parameters__fixed.expandAreaMargin - context_.m_prevImgBound.x + 1);
+							context_.m_prevImgBound.height = (int)(p2Max.y + m_parameters__fixed.expandAreaMargin - context_.m_prevImgBound.y + 1);
 
 							if (m_setBoundRectCB != nullptr)
 							{
@@ -8940,7 +8940,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				y_1 = y1;
 
 				int iNewBoundStamp = m_iEyeGazePointsStamp__mutex;
-				if (iNewBoundStamp != m_iEyeGazeStamp__detect					
+				if (iNewBoundStamp != m_iEyeGazeStamp__detect
 					&& m_mutexNewEyeGazePoints__mutex.try_lock() == true
 					)
 				{
@@ -8951,7 +8951,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 
 					int centerX = width * tempEyeGaze[0];
-					int centerY = height * tempEyeGaze[1];
+					int centerY = height * (1.f - tempEyeGaze[1]);
 
 					int iHalfWidth = context_.m_prevImgBound.width / 2;
 					int iHalfHeight = context_.m_prevImgBound.height / 2;
@@ -8969,8 +8969,8 @@ namespace NewCylindricalProbeTrackerNamespace
 						auxRect.x -= xDiff;
 						auxRect.y -= yDiff;
 					}
-					
-					
+
+
 					x_1 = centerX + iHalfWidth;
 					y_1 = centerY + iHalfHeight;
 				}
@@ -8979,14 +8979,6 @@ namespace NewCylindricalProbeTrackerNamespace
 				context_.m_prevImgBound.y = y0;
 				context_.m_prevImgBound.width = x1 - x0;
 				context_.m_prevImgBound.height = y1 - y0;
-
-				if (context_.m_prevImgBound.empty() == false)
-				{	
-					if (m_setDetectionAreaCB != nullptr)
-					{
-						(*m_setDetectionAreaCB)(context_.m_prevImgBound);
-					}					
-				}
 
 				x = std::max(0, x);
 				y = std::max(0, y);
@@ -9007,12 +8999,13 @@ namespace NewCylindricalProbeTrackerNamespace
 					rect.width = x_1 - x;
 					rect.height = y_1 - y;
 				}
-			
+
+
 			}
 
 			//Mat thresh_img = new Mat(height, width, CV_8UC1);
 #ifndef USE_LIBCBDETECTOR
-			if ( m_aCurThresholded__detect[0].cols != width || m_aCurThresholded__detect[0].rows != height
+			if (m_aCurThresholded__detect[0].cols != width || m_aCurThresholded__detect[0].rows != height
 				|| m_aCurThresholded__detect[0].type() != CV_8UC1)
 			{
 				m_aCurThresholded__detect[0].create(height, width, CV_8UC1);
@@ -9031,15 +9024,29 @@ namespace NewCylindricalProbeTrackerNamespace
 #endif USE_LIBCBDETECTOR
 			if (rect.x == 0 && rect.y == 0 && rect.width == width && rect.height == height)
 			{
+				if (context_.m_prevImgBound.empty() == false)
+				{
+					if (m_setDetectionAreaCB != nullptr)
+					{
+						(*m_setDetectionAreaCB)(rect);
+					}
+				}
 				rectGray = curGray_;
 				rectColor = curColor_;
 #ifndef USE_LIBCBDETECTOR
 				aRectThresholded[0] = m_aCurThresholded__detect[0];
 				aRectThresholded[1] = m_aCurThresholded__detect[1];
-#endif USE_LIBCBDETECTOR
+#endif USE_LIBCBDETECTOR7
 			}
 			else
 			{
+				if (context_.m_prevImgBound.empty() == false)
+				{
+					if (m_setDetectionAreaCB != nullptr)
+					{
+						(*m_setDetectionAreaCB)(rect);
+					}
+				}
 				rectGray = curGray_(rect);
 				if (curColor_.empty() == false)
 				{
@@ -9243,7 +9250,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				// The function "icvFindConnectedQuads assigns all connected quads
 				// a unique group ID.
 				// If more quadrangles were assigned to a given group (i.e. connected)
-				// than are expected by the input variable "pattern_size", the 
+				// than are expected by the input variable "pattern_size", the
 				// function "icvCleanFoundConnectedQuads" erases the surplus
 				// quadrangles by minimizing the convex hull of the remaining pattern->
 
@@ -9265,7 +9272,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 				convertCorners(m_corner__detect, corners, rect);
 				CvCBCorner& cdummy = corners.back();
-				int iNumGroups = (int) m_boards__detect.size();
+				int iNumGroups = (int)m_boards__detect.size();
 				{
 					int iQuadOffset = 0;
 
@@ -9274,7 +9281,7 @@ namespace NewCylindricalProbeTrackerNamespace
 						const cbdetect::Board& board = m_boards__detect[i];
 						int rows = board.rows() - 3;
 						int cols = board.cols() - 3;
-						if (rows > 0 && cols > 0 && board.getBoardType() != cbdetect::BoardTypeInvalid )
+						if (rows > 0 && cols > 0 && board.getBoardType() != cbdetect::BoardTypeInvalid)
 						{
 							iQuadOffset += rows * cols;
 						}
@@ -9288,7 +9295,7 @@ namespace NewCylindricalProbeTrackerNamespace
 						const cbdetect::Board& board = m_boards__detect[i];
 						int rows = board.rows() - 3;
 						int cols = board.cols() - 3;
-						if ( false == (rows > 0 && cols > 0 && board.getBoardType() != cbdetect::BoardTypeInvalid) )
+						if (false == (rows > 0 && cols > 0 && board.getBoardType() != cbdetect::BoardTypeInvalid))
 							continue;
 
 						for (int r = 0; r < rows; r++)
@@ -9438,7 +9445,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 						// MARTIN's Code
 						// To save computational time, only proceed, if the number of
-						// found quads during this dilation run is larger than the 
+						// found quads during this dilation run is larger than the
 						// largest previous found number
 						//if (count >= max_count)
 
@@ -9446,7 +9453,7 @@ namespace NewCylindricalProbeTrackerNamespace
 
 
 
-					//// The following function labels all corners of every quad 
+					//// The following function labels all corners of every quad
 					//// with a row and column entry.
 					//// "count" specifies the number of found quads in "quad_group"
 					//// with group identifier "group_idx"
@@ -9463,9 +9470,9 @@ namespace NewCylindricalProbeTrackerNamespace
 
 
 					//// The following function copies every member of "quad_group"
-					//// to "output_quad_group", because "quad_group" will be 
+					//// to "output_quad_group", because "quad_group" will be
 					//// overwritten during the next loop pass.
-					//// "output_quad_group" is a true copy of "quad_group" and 
+					//// "output_quad_group" is a true copy of "quad_group" and
 					//// later used for output
 					//mrCopyQuadGroup(quad_group, output_quad_group, max_count);
 
@@ -9543,7 +9550,7 @@ namespace NewCylindricalProbeTrackerNamespace
 						else
 						{
 							if (markerPatterns[pattern->pattern_type] == nullptr
-								|| pattern->min_max_wh_sqr.MinSqr() > markerPatterns[pattern->pattern_type]->min_max_wh_sqr.MinSqr() )
+								|| pattern->min_max_wh_sqr.MinSqr() > markerPatterns[pattern->pattern_type]->min_max_wh_sqr.MinSqr())
 							{
 								markerPatterns[pattern->pattern_type] = pattern;
 								bFindMarker = true;
@@ -9571,7 +9578,7 @@ namespace NewCylindricalProbeTrackerNamespace
 								{
 									SinglePattern* pattern = foundPattern[pindex];
 									uint flag = (uint)(1 << pattern->pattern_type);
-									if (((context_.m_uExternalTrackType & (m_uAuxPatternMarkerMask__fixed| m_uAuxNoPatternMarkerMask__fixed)) & flag) == 0)
+									if (((context_.m_uExternalTrackType & (m_uAuxPatternMarkerMask__fixed | m_uAuxNoPatternMarkerMask__fixed)) & flag) == 0)
 										continue;
 
 									Point2 dirCode(0, 0);
@@ -9725,7 +9732,7 @@ namespace NewCylindricalProbeTrackerNamespace
 							//{
 							//	if (markerPatterns[(int)MarkerType_AUX_BASE + aux] != null)
 							//	{
-							//		collect2D3DPoints(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength, 
+							//		collect2D3DPoints(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength,
 							//			markerPatterns[(int)MarkerType_AUX_BASE + aux], modelPointsRuntime, imgPointsRuntime, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]);
 							//		refinePlaneCorners(m_parameters__fixed.auxiliaryMarkerSettings[aux].checkerboardXLength
 							//			, curGray_, m_auxliaryMarkerInfos__fixed[aux], context_.m_auxliaryMarkerRuntimes[aux]);
@@ -9873,7 +9880,7 @@ namespace NewCylindricalProbeTrackerNamespace
 								rectAll.x /= xScale;
 								rectAll.width /= xScale;
 								rectAll.y /= yScale;
-								rectAll.height/= yScale;
+								rectAll.height /= yScale;
 
 								for (int i = 0; i < listResult.size(); ++i)
 								{
@@ -10273,7 +10280,7 @@ namespace NewCylindricalProbeTrackerNamespace
 				errArray.clear();
 
 				for (int i = 0; i < prevPointsList.size(); ++i)
-				{					
+				{
 					prevPointsList[i].x *= invXScale;
 					prevPointsList[i].y *= invYScale;
 				}
@@ -11545,7 +11552,7 @@ CVAPI(int) NewCylindricalProbeTracker_DeleteNearestBoundingBox(void* pData)
 }
 
 static void EstimateBoundBox(NearestBoundingBox* pData, NewCylindricalProbeTrackerNamespace::BoundBoxResult* pBBox1, unsigned int width, unsigned int height, unsigned int px, unsigned int py, unsigned short u16Tolerance
-	, int iFill )
+	, int iFill)
 {
 	pData->m_vecStack.resize(0);
 	int index = width * py + px;
@@ -11588,7 +11595,7 @@ static void EstimateBoundBox(NearestBoundingBox* pData, NewCylindricalProbeTrack
 						pData->m_vecStack.push_back(CoordValue(x, pt.m_y - 1)); // push the new point if it transitioned to clear
 				}
 			}
-			if (pt.m_y + 1 < height ) // if there's a transition in the cell below...
+			if (pt.m_y + 1 < height) // if there's a transition in the cell below...
 			{
 				index = width * (pt.m_y + 1) + x;
 				tv = pData->m_vecDepth[index];
@@ -11812,4 +11819,3 @@ CVAPI(int) NewCylindricalProbeTracker_GetNearestBoudingBox(const unsigned short*
 
 	return S_OK;
 }
-
